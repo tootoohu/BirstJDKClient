@@ -1,0 +1,65 @@
+Manifest-Version: 1.0
+Class-Path: asm-5.2.jar js-1.7R2.jar guava-19.0.jar antlr-2.7.7.jar cx
+ f-manifest.jar hawtbuf-1.11.jar jasypt-1.9.2.jar neethi-3.1.0.jar wsd
+ l4j-1.6.3.jar xmlsec-2.1.0.jar joda-time-2.9.jar cxf-core-3.2.0.jar e
+ hcache-2.10.4.jar httpcore-4.4.6.jar jettison-1.3.8.jar oauth-2010052
+ 7.jar stax-api-1.0-2.jar xmlbeans-2.6.0.jar jaxb-xjc-2.2.11.jar stax2
+ -api-3.1.4.jar commons-text-1.1.jar cxf-xjc-dv-3.2.0.jar cxf-xjc-ts-3
+ .2.0.jar httpclient-4.5.3.jar jaxb-core-2.2.11.jar jaxb-impl-2.2.11.j
+ ar mina-core-2.0.14.jar slf4j-api-1.7.25.jar xml-resolver-1.2.jar com
+ mons-lang3-3.6.jar cryptacular-1.1.1.jar cxf-rt-wsdl-3.2.0.jar common
+ s-codec-1.10.jar cxf-rt-ws-rm-3.2.0.jar FastInfoset-1.2.13.jar httpco
+ re-nio-4.4.6.jar java-support-7.3.0.jar metrics-core-3.2.0.jar slf4j-
+ jdk14-1.7.25.jar wss4j-policy-2.2.0.jar bcprov-jdk15on-1.57.jar cxf-r
+ t-rs-sse-3.2.0.jar cxf-rt-ws-mex-3.2.0.jar javax.ws.rs-api-2.1.jar op
+ ensaml-core-3.3.0.jar woodstox-core-5.0.3.jar cxf-rt-ws-addr-3.2.0.ja
+ r cxf-xjc-bug671-3.2.0.jar wss4j-bindings-2.2.0.jar xmlschema-core-2.
+ 2.2.jar cxf-rt-security-3.2.0.jar cxf-tools-corba-3.2.0.jar cxf-xjc-b
+ oolean-3.2.0.jar cxf-xjc-javadoc-3.2.0.jar cxf-xjc-runtime-3.2.0.jar 
+ httpasyncclient-4.1.3.jar jcl-over-slf4j-1.7.25.jar activemq-broker-5
+ .14.5.jar activemq-client-5.14.5.jar cxf-rt-rs-client-3.2.0.jar cxf-r
+ t-ws-policy-3.2.0.jar cxf-tools-common-3.2.0.jar cxf-rt-javascript-3.
+ 2.0.jar cxf-rt-management-3.2.0.jar cxf-tools-java2ws-3.2.0.jar javax
+ .servlet-api-3.1.0.jar oauth-provider-20100527.jar opensaml-saml-api-
+ 3.3.0.jar opensaml-soap-api-3.3.0.jar woodstox-core-asl-4.4.1.jar cxf
+ -rt-frontend-js-3.2.0.jar cxf-rt-ws-security-3.2.0.jar javax.annotati
+ on-api-1.3.jar jetty-io-9.4.6.v20170531.jar opensaml-saml-impl-3.3.0.
+ jar opensaml-xacml-api-3.3.0.jar velocity-engine-core-2.0.jar atmosph
+ ere-runtime-2.4.14.jar commons-collections-3.2.2.jar cxf-rt-bindings-
+ xml-3.2.0.jar cxf-tools-misctools-3.2.0.jar cxf-tools-validator-3.2.0
+ .jar opensaml-xacml-impl-3.3.0.jar opensaml-xmlsec-api-3.3.0.jar spri
+ ng-aop-4.3.10.RELEASE.jar spring-web-4.3.10.RELEASE.jar cxf-rt-bindin
+ gs-soap-3.2.0.jar cxf-rt-rs-json-basic-3.2.0.jar cxf-rt-security-saml
+ -3.2.0.jar cxf-services-wsn-api-3.2.0.jar jetty-http-9.4.6.v20170531.
+ jar jetty-util-9.4.6.v20170531.jar opensaml-profile-api-3.3.0.jar ope
+ nsaml-xmlsec-impl-3.3.0.jar spring-core-4.3.10.RELEASE.jar cxf-rt-bin
+ dings-coloc-3.2.0.jar cxf-rt-bindings-corba-3.2.0.jar cxf-rt-frontend
+ -jaxrs-3.2.0.jar cxf-rt-frontend-jaxws-3.2.0.jar cxf-rt-transports-jm
+ s-3.2.0.jar cxf-rt-transports-udp-3.2.0.jar cxf-services-sts-core-3.2
+ .0.jar cxf-services-wsn-core-3.2.0.jar cxf-tools-wsdlto-core-3.2.0.ja
+ r geronimo-jms_1.1_spec-1.1.1.jar geronimo-jta_1.1_spec-1.1.1.jar ope
+ nsaml-security-api-3.3.0.jar spring-beans-4.3.10.RELEASE.jar wss4j-ws
+ -security-dom-2.2.0.jar cxf-rt-frontend-simple-3.2.0.jar cxf-rt-rs-se
+ curity-xml-3.2.0.jar cxf-rt-transports-http-3.2.0.jar cxf-tools-wadlt
+ o-jaxrs-3.2.0.jar jetty-server-9.4.6.v20170531.jar opensaml-security-
+ impl-3.3.0.jar wss4j-ws-security-stax-2.2.0.jar cxf-rt-databinding-ja
+ xb-3.2.0.jar cxf-rt-rs-security-cors-3.2.0.jar cxf-rt-rs-security-jos
+ e-3.2.0.jar cxf-rt-transports-local-3.2.0.jar opensaml-xacml-saml-api
+ -3.3.0.jar spring-context-4.3.10.RELEASE.jar cxf-rt-databinding-aegis
+ -3.2.0.jar cxf-rt-rs-security-oauth-3.2.0.jar jetty-security-9.4.6.v2
+ 0170531.jar opensaml-xacml-saml-impl-3.3.0.jar wss4j-ws-security-comm
+ on-2.2.0.jar activemq-openwire-legacy-5.14.5.jar cxf-rt-rs-security-o
+ auth2-3.2.0.jar cxf-rt-transports-http-hc-3.2.0.jar cxf-rt-features-c
+ lustering-3.2.0.jar cxf-rt-rs-extension-search-3.2.0.jar geronimo-jav
+ amail_1.4_mail-1.8.4.jar spring-expression-4.3.10.RELEASE.jar cxf-rt-
+ rs-security-sso-saml-3.2.0.jar cxf-rt-transports-http-jetty-3.2.0.jar
+  jetty-continuation-9.4.6.v20170531.jar cxf-rt-rs-extension-providers
+ -3.2.0.jar cxf-rt-rs-security-jose-jaxrs-3.2.0.jar cxf-rt-rs-service-
+ description-3.2.0.jar cxf-services-ws-discovery-api-3.2.0.jar wss4j-w
+ s-security-policy-stax-2.2.0.jar cxf-tools-wsdlto-frontend-jaxws-3.2.
+ 0.jar cxf-services-ws-discovery-service-3.2.0.jar cxf-tools-wsdlto-da
+ tabinding-jaxb-3.2.0.jar geronimo-j2ee-management_1.1_spec-1.0.1.jar 
+ cxf-rt-transports-http-netty-client-3.2.0.jar cxf-rt-transports-http-
+ netty-server-3.2.0.jar cxf-tools-wsdlto-frontend-javascript-3.2.0.jar
+Main-Class: com.infor.RunClient
+
