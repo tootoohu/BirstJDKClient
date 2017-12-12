@@ -1,5 +1,7 @@
 package com.infor.admin;
 
+import com.birst.ArrayOfCloudConnection;
+import com.birst.CloudConnection;
 import com.birst.CommandWebServiceSoap;
 import com.birst.UserSpace;
 
@@ -25,7 +27,16 @@ public class SpaceManagement {
         client.executeQueryInSpace(token,query,spaceId);
     }
 
-    public List<UserSpace> listAllSpaces(String token){
-        return client.listAllSpaces(token).getUserSpace();
+    public void extractCloudConnectorData(String token, String spaceId, String connectionName){
+        ArrayOfCloudConnection cloudConnections = new  ArrayOfCloudConnection();
+        CloudConnection cc = new CloudConnection();
+        cc.setConnectionName(connectionName);
+        cloudConnections.getCloudConnection().add(cc);
+        client.extractCloudConnectorData(token,spaceId,cloudConnections);
     }
+
+    public void clearCacheInSpace(String token, String spaceId){
+        client.clearCacheInSpace(token,spaceId);
+    }
+
 }

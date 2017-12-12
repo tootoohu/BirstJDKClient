@@ -1,11 +1,16 @@
 package com.infor;
 
 import com.birst.*;
-import com.infor.model.BirstProperties;
+import com.infor.model.webservice.BirstProperties;
 
 import javax.xml.ws.BindingProvider;
 import java.net.MalformedURLException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class RunClient {
 
@@ -47,10 +52,10 @@ public class RunClient {
 
 
         System.out.println("call!");
-        String token = webservice.getCommandWebServiceSoap().login("shelley.hu@infor.com","Welcome1");
+        String token = webservice.getCommandWebServiceSoap().login("shelley.hu@infor.com","Hello123");
 
         System.out.println(token);
-
+        String spaceId = "e93f6408-a7bb-4c54-81bd-6826521d30e4";
 
        // ArrayOfString hierachies = webservice.getCommandWebServiceSoap().getAllHierarchies(token, "e93f6408-a7bb-4c54-81bd-6826521d30e4");
        // System.out.println(hierachies.getString());
@@ -69,9 +74,23 @@ public class RunClient {
 
        // -- webservice.getCommandWebServiceSoap().listAllSpaces(token);
 
-        System.out.println(webservice.getCommandWebServiceSoap().getUserProfile(token));
-        System.out.println(webservice.getCommandWebServiceSoap().getLanguageForUser(token,"shelley.hu@infor.com"));
 
+        List<String> subjects = webservice.getCommandWebServiceSoap().listCustomSubjectAreas(token,"e93f6408-a7bb-4c54-81bd-6826521d30e4").getString();
+        subjects.forEach(k -> System.out.println(k));
+
+     //   MetaDataResult result = webservice.getCommandWebServiceSoap().getODBCMetaDataSubjectAreas(token,"e93f6408-a7bb-4c54-81bd-6826521d30e4");
+      //  System.out.println(result.getTables().getODBCTableResult());
+
+       // MetaDataResult result = webservice.getCommandWebServiceSoap().getODBCMetaData(token,"e93f6408-a7bb-4c54-81bd-6826521d30e4");
+       // System.out.println(result.getTables());
+
+
+        FileNode pro = webservice.getCommandWebServiceSoap().getDirectoryContents(token,spaceId,"shared/Dashboard/Sales/Booking Analysis");
+        System.out.println(pro.getName());
+
+        ExecutorService X;
+        Executors y;
+        Collections.synchronizedMap(new HashMap<>()) ;
 
     }
 

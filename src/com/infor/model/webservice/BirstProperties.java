@@ -1,4 +1,4 @@
-package com.infor.model;
+package com.infor.model.webservice;
 
 import java.io.IOException;
 import java.util.Properties;

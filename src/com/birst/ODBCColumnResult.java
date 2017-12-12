@@ -147,7 +147,7 @@ public class ODBCColumnResult {
      * Sets the value of the aggsSupported property.
      * 
      * @param value
-     *     allowed object is
+     *     allowed object is`
      *     {@link ArrayOfString }
      *     
      */

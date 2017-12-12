@@ -1,4 +1,4 @@
-package com.infor.model;
+package com.infor.model.webservice;
 
 import com.infor.admin.CommandWebServiceClient;
 

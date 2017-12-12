@@ -1,20 +1,16 @@
 package com.infor.test;
 
-import com.birst.UserSpace;
 import com.infor.admin.SpaceManagement;
-import com.infor.model.BirstProperties;
-import com.infor.model.LoginToken;
+import com.infor.model.webservice.BirstProperties;
+import com.infor.model.webservice.LoginToken;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runner.Runner;
-import org.junit.runners.Suite;
-
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class SpaceManagementTest {
+    @Test
+    public void extractCloudConnectorData() throws Exception {
+        sm.extractCloudConnectorData(token,spaceId,"CSI");
+    }
 
     private SpaceManagement sm = new SpaceManagement();
     private static String token;
@@ -52,10 +48,8 @@ public class SpaceManagementTest {
     }
 
 
-    @Test
-    public void listAllSpaces() throws Exception{
-        List<UserSpace> list = sm.listAllSpaces(token);
-        System.out.println(list);
-    }
+
+
+
 
 }

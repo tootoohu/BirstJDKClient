@@ -1,10 +1,9 @@
 package com.infor;
 
-import com.birst.SourceColumnSubClass;
-import com.birst.StagingTableSubClass;
 import com.infor.admin.DataSourceManagement;
-import com.infor.model.BirstProperties;
-import com.infor.model.LoginToken;
+import com.infor.model.webservice.BirstProperties;
+import com.infor.model.webservice.LoginToken;
+import com.infor.model.webservice.SourceDetail;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -27,13 +26,16 @@ public class ClientApplication {
         System.out.println("2: Retrieve all Data Sources");
         System.out.println("3: Retrieve Data Source Detail");
         Scanner scan = new Scanner(System.in);
-        String read = scan.nextLine();
-        switch (read){
-            case "1": getAllHierarchies(); break;
-            case "2": getSourcesList(); break;
-            case "3":  System.out.println("please enter the source name:"); read = scan.nextLine(); getSourceDetail(read);break;
-            default:
-                System.out.println("Please enter the correct number!");
+      //  String read = scan.nextLine();
+        String read;
+        while((read = scan.nextLine()) != " "){
+            switch (read){
+                case "1": getAllHierarchies(); break;
+                case "2": getSourcesList(); break;
+                case "3":  System.out.println("please enter the source name:"); read = scan.nextLine(); getSourceDetail(read);break;
+                default:
+                    System.out.println("Please enter the correct number!");
+            }
         }
 
     }
@@ -69,10 +71,10 @@ public class ClientApplication {
 
     private static void getSourceDetail(String name){
 
-        StagingTableSubClass detail = dataSourceManagement.getSourceDetails(token,spaceId,name);
+        SourceDetail detail = dataSourceManagement.getSourceDetails(token,spaceId,name);
 
-        List<SourceColumnSubClass> columns = detail.getColumns().getSourceColumnSubClass();
-        for (SourceColumnSubClass column: columns ) {
+        List<SourceDetail.SourceColumn> columns = detail.getColumns();
+        for (SourceDetail.SourceColumn column: columns ) {
             System.out.print(column.getName() + "       ");
             System.out.print(" Data Type: " + column.getDataType() + " ");
             System.out.print(" Width: " + column.getWidth());
