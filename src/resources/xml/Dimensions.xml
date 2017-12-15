@@ -40,7 +40,7 @@
         <property name="Unit Code 3" type="Varchar" width="3"></property>
         <property name="Unit Code 3 Description" type="Varchar" width="35"></property>
     </Dimension>
-    <Dimension name="Unit Code 1">
+    <Dimension name="Unit Code 4">
         <property name="Unit Code 4" type="Varchar" width="3"></property>
         <property name="Unit Code 4 Description" type="Varchar" width="35"></property>
     </Dimension>

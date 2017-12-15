@@ -33,7 +33,7 @@ public class DataSourceManagement {
         return SourceDetailConverter.Convert2SourceDetail(stagingTableSubClass);
     }
 
-    public void setSourceDetails(String token, String spaceId){
+    public void setSourceDetails(String token, String spaceId, String sourceName){
         StagingTableSubClass tableSubClass;
         CommandWebServiceClient.getInstance().setSourceDetails(token,spaceId,null);
     }

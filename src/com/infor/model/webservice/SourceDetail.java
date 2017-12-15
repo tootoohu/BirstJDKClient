@@ -250,7 +250,7 @@ public class SourceDetail {
         }
     }
 
-    public static class ScriptDetail{
+     public static class ScriptDetail{
         protected String inputQuery;
         protected String output;
         protected String script;

@@ -6,7 +6,7 @@ public class DataSource {
 
     private String name;
 
-    private List<SourceEntry> sourceEntryList;
+    private List<SourceColumnEntry> sourceEntryList;
 
     private boolean isDimension;
 
@@ -18,11 +18,11 @@ public class DataSource {
         this.name = name;
     }
 
-    public List<SourceEntry> getSourceEntryList() {
+    public List<SourceColumnEntry> getSourceEntryList() {
         return sourceEntryList;
     }
 
-    public void setSourceEntryList(List<SourceEntry> sourceEntryList) {
+    public void setSourceEntryList(List<SourceColumnEntry> sourceEntryList) {
         this.sourceEntryList = sourceEntryList;
     }
 

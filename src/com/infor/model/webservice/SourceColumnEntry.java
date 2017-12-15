@@ -1,6 +1,6 @@
 package com.infor.model.webservice;
 
-public class SourceEntry {
+public class SourceColumnEntry {
 
     private String name;
 
@@ -8,7 +8,7 @@ public class SourceEntry {
 
     private String width;
 
-    private String hierarchy;
+    private String dimension;
 
     private boolean isMeasure;
 
@@ -38,12 +38,12 @@ public class SourceEntry {
         this.width = width;
     }
 
-    public String getHierarchy() {
-        return hierarchy;
+    public String getDimension() {
+        return dimension;
     }
 
-    public void setHierarchy(String hierarchy) {
-        this.hierarchy = hierarchy;
+    public void setDimension(String dimension) {
+        this.dimension = dimension;
     }
 
     public boolean isMeasure() {

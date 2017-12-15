@@ -1,8 +1,8 @@
 <Cubes>
     <Cube name ="Financial Income Analysis">
-        <property name="Account" type="Varchar" width="21" Dimension="Account"></property>
-        <property name="Site" type="Varchar" width="4" Dimension="Site"></property>
-        <property name="Currency Code" type="Varchar" width="3" Dimension="Currency Code"></property>
+        <property name="Account" type="Varchar" width="21" dimension="Account"></property>
+        <property name="Site" type="Varchar" width="4" dimension="Site"></property>
+        <property name="Currency Code" type="Varchar" width="3" dimension="Currency Code"></property>
         <property name="Actual Amount" type="Float" width="25"></property>
         <property name="Actual Assets" type="Float" width="25"></property>
         <property name="Actual Expense" type="Float" width="25"></property>
@@ -16,10 +16,10 @@
         <property name="Budget Variance" type="Float" width="25"></property>
         <property name="Date" type="Date" width="10"></property>
         <property name="Fiscal Period" type="Date" width="10"></property>
-        <property name="Unit Code 1" type="Varchar" width="16" Dimension="Unit Code 1"></property>
-        <property name="Unit Code 2" type="Varchar" width="16" Dimension="Unit Code 2"></property>
-        <property name="Unit Code 3" type="Varchar" width="16" Dimension="Unit Code 3"></property>
-        <property name="Unit Code 4" type="Varchar" width="16" Dimension="Unit Code 4"></property>
+        <property name="Unit Code 1" type="Varchar" width="16" dimension="Unit Code 1"></property>
+        <property name="Unit Code 2" type="Varchar" width="16" dimension="Unit Code 2"></property>
+        <property name="Unit Code 3" type="Varchar" width="16" dimension="Unit Code 3"></property>
+        <property name="Unit Code 4" type="Varchar" width="16" dimension="Unit Code 4"></property>
     </Cube>
 
 </Cubes>
