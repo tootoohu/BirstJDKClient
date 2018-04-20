@@ -23,7 +23,7 @@ public class SpaceManagementTest {
         String address = properties.getAddress();
         userName = properties.getUser();
         String pwd = properties.getPassword();
-        spaceId = properties.getSpaceId();
+        spaceId = properties.getTargetSpaceId();
         LoginToken loginToken = new LoginToken();
         loginToken.Login(userName,pwd);
         token = loginToken.getToken();

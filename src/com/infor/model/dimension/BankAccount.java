@@ -8,6 +8,7 @@ import javax.persistence.*;
  * The persistent class for the BI_Dim_Bank_Account_BV_View database table.
  * 
  */
+@Deprecated
 @Entity
 @Table(name="BI_Dim_Bank_Account_BV_View")
 //@NamedQuery(name="BankAccount.findAll", query="SELECT b FROM BankAccount b")

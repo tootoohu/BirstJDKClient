@@ -11,6 +11,7 @@ import java.util.Date;
  * The persistent class for the BI_fact_financial_income_analysis_staging database table.
  * 
  */
+@Deprecated
 @Entity
 @Table(name="BI_fact_financial_income_analysis_staging")
 //@NamedQuery(name="FinancialIncomeAnalysis.findAll", query="SELECT f FROM FinancialIncomeAnalysis f")

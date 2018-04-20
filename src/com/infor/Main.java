@@ -1,51 +1,62 @@
 package com.infor;
 
+import com.birst.HierarchyMetadata;
+import com.birst.StagingTableSubClass;
+import com.infor.admin.BackupManagement;
+import com.infor.admin.DataSourceManagement;
+import com.infor.model.webservice.BirstProperties;
 import com.infor.model.webservice.SourceColumnEntry;
-import com.infor.util.XMLParser;
+import com.infor.model.webservice.SourceEntry;
+import com.infor.util.DataSourceContainer;
 import javafx.application.Application;
-import javafx.event.EventType;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import org.xml.sax.SAXException;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreeSelectionModel;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION;
 
 public class Main extends Application {
 
 
-    private Map<String, List<SourceColumnEntry>> cubeMap;
-    private Map<String, List<SourceColumnEntry>> dimensionMap;
+    private DataSourceContainer dataSourceContainer;
+    private TableView<SourceColumnEntry> table = new TableView<SourceColumnEntry>();
+    private SourceEntry currentSourceEntry;
+    private BirstProperties birstProperties;
 
 
+    private DataSourceManagement dataSourceManagement =  new DataSourceManagement();
+    private BackupManagement backupManagement;
     @Override
     public void start(Stage primaryStage) throws Exception{
-        loadXmlDocument();
+        initialize();
         TabPane mainPane = new TabPane();
         mainPane.setPrefSize(1000, 1000);
 
         mainPane.getTabs().add(loadAdminTab());
 
-
-
         primaryStage.setTitle("Birst Desktop Client");
-        primaryStage.setScene(new Scene(mainPane, 600, 475));
+        primaryStage.setScene(new Scene(mainPane, 1000, 600));
         primaryStage.show();
 
     }
+
+    private void initialize(){
+        birstProperties = new BirstProperties("/resources/birst.properties");
+        dataSourceContainer = new DataSourceContainer();
+        dataSourceContainer.loadXmlDocument();
+        backupManagement = new BackupManagement(dataSourceManagement);
+        }
 
     private Tab loadAdminTab(){
 
@@ -53,34 +64,79 @@ public class Main extends Application {
         adminTab.setText("Admin");
 
         StackPane treePane = new StackPane();
-        TreeItem treeItem = new TreeItem<>("SL");
+        TreeItem rootTreeItem = new TreeItem<>("SL");
 
-        treeItem.setExpanded(true);
-        TreeView treeView = new TreeView<>(treeItem);
-        loadTreeItems(treeItem, cubeMap);
-        loadTreeItems(treeItem,dimensionMap);
+        rootTreeItem.setExpanded(true);
+        TreeItem cubeRoot = new TreeItem("Cubes");
+        TreeView treeView = new TreeView<>(rootTreeItem);
+        rootTreeItem.getChildren().add(cubeRoot);
+        loadTreeItems(cubeRoot, dataSourceContainer.getCubeMap());
+        TreeItem dimensionRoot = new TreeItem("Dimensions");
+        rootTreeItem.getChildren().add(dimensionRoot);
+        loadTreeItems(dimensionRoot, dataSourceContainer.getDimensionMap());
+
+        treeView.getSelectionModel().selectedItemProperty().addListener(new javafx.beans.value.ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                TreeItem treeItem = (TreeItem) newValue;
+                refreshTableData(treeItem);
+
+            }
+        });
 
         treePane.getChildren().add(treeView);
 
+        SplitPane rightPane = new SplitPane();
+        loadTableView();
+        Button updatebtn = new Button("Update");
+        updatebtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
 
-        StackPane rightPane = new StackPane();
-        Button button = new Button();
-        button.setLayoutX(15.0);
-        button.setLayoutY(6.0);
+               HierarchyMetadata hm = dataSourceManagement.getHierarchy(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry.getName());
 
-        Label label = new Label("Name");
-        label.setLayoutX(15);
-        label.setLayoutY(10);
-        TextField textField = new TextField("Type Something");
-        textField.setLayoutX(15.0);
-        textField.setLayoutY(15.0);
-        button.setText("Click");
-        rightPane.getChildren().add(button);
-        rightPane.getChildren().add(textField);
-        rightPane.getChildren().add(label);
+                if(hm != null && hm.getChildren().getLevelMetadata() != null){
+                    dataSourceManagement.updateHierarchy(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry,dataSourceContainer.getByKey(currentSourceEntry));
+
+                }else {
+                    dataSourceManagement.createHierarchy(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry,dataSourceContainer.getByKey(currentSourceEntry));
+                }
+
+                StagingTableSubClass tableSubClass = dataSourceManagement.getSourceDetails(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry.getName());
+                if (tableSubClass != null){
+                   dataSourceManagement.setSourceDetails(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry,dataSourceContainer.getByKey(currentSourceEntry));
+                }
+
+            }
+        });
+
+        updatebtn.setPrefSize(110,30);
+        updatebtn.setLayoutX(10);
+        FlowPane buttonMenuPane = new FlowPane ();
+        buttonMenuPane.setVgap(4);
+        buttonMenuPane.setHgap(6);
+        buttonMenuPane.setAlignment(Pos.BASELINE_LEFT);
+
+        Button backupBtn = new Button("Backup");
+        backupBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                backupManagement.Bakup(birstProperties.getLoginToken(),birstProperties.getSourceSpaceId(),birstProperties.getSourceSpaceName());
+            }
+        });
+
+        backupBtn.setPrefSize(110,30);
+        backupBtn.setLayoutX(100);
+        buttonMenuPane.getChildren().addAll(updatebtn,backupBtn);
+
+        StackPane tablePane = new StackPane();
+        tablePane.getChildren().add(table);
+        rightPane.setDividerPositions(0.05f,0.95f);
+        rightPane.setOrientation(Orientation.VERTICAL);
+
+        rightPane.getItems().addAll(buttonMenuPane,tablePane);
+
         SplitPane sp = new SplitPane();
-
-
 
         sp.getItems().addAll(treePane,rightPane);
         sp.setDividerPositions(0.3f, 0.7f);
@@ -88,53 +144,48 @@ public class Main extends Application {
         return  adminTab;
     }
 
-    private void loadXmlDocument(){
-        XMLParser parser = null;
-        if(cubeMap != null)
-            return;
-        cubeMap = new HashMap();
-        dimensionMap = new HashMap();
 
-        try {
-            parser = new XMLParser();
-            cubeMap =  parser.getSourceList("/resources/xml/Cubes.xml");
-            dimensionMap =  parser.getSourceList("/resources/xml/Dimensions.xml");
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        }
+    private void loadTableView(){
+        TableColumn nameCol = new TableColumn("Name");
+        nameCol.setMinWidth(100);
+        nameCol.setCellValueFactory(
+                new PropertyValueFactory<SourceColumnEntry, String>("Name"));
 
+        TableColumn typeCol = new TableColumn("Type");
+        typeCol.setMinWidth(100);
+        typeCol.setCellValueFactory(
+                new PropertyValueFactory<SourceColumnEntry, String>("Type"));
+
+        TableColumn widthCol = new TableColumn("Width");
+        widthCol.setMinWidth(100);
+        widthCol.setCellValueFactory(
+                new PropertyValueFactory<SourceColumnEntry, Integer>("Width"));
+
+        table.getColumns().addAll(nameCol, typeCol, widthCol);
     }
 
+    private void refreshTableData(TreeItem treeItem){
 
-    private void loadTreeItems(TreeItem treeItem, Map<String, List<SourceColumnEntry>> map){
+        if(treeItem.getValue() instanceof SourceEntry){
+            SourceEntry se = (SourceEntry) treeItem.getValue();
+            currentSourceEntry = se;
+            table.setItems(FXCollections.observableArrayList(dataSourceContainer.getByKey(se)));
+        }
+    }
 
+    private void loadTreeItems(TreeItem treeItem, Map<SourceEntry, List<SourceColumnEntry>> map){
 
-        for(Map.Entry<String, List<SourceColumnEntry>> entry: map.entrySet()){
-
+        for(Map.Entry<SourceEntry, List<SourceColumnEntry>> entry: map.entrySet()){
             TreeItem item = new TreeItem(entry.getKey());
             treeItem.getChildren().add(item);
-            for(SourceColumnEntry sce : entry.getValue()){
-                TreeItem subItem = new TreeItem( sce.getName());
-                //subItem.addEventHandler();
-                item.getChildren().add(subItem);
-            }
         }
-
     }
 
 
     public static void main(String[] args) {
 
-
         launch(args);
     }
-
 
 
 }

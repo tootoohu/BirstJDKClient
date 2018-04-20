@@ -10,6 +10,7 @@ import java.sql.Timestamp;
  * The persistent class for the BI_fact_partner_qualification_analysis_staging database table.
  * 
  */
+@Deprecated
 @Entity
 @Table(name="BI_fact_partner_qualification_analysis_staging")
 //@NamedQuery(name="PartnerQualificationAnalysis.findAll", query="SELECT p FROM PartnerQualificationAnalysis p")

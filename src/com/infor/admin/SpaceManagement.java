@@ -7,24 +7,24 @@ import com.birst.UserSpace;
 
 import java.util.List;
 
-public class SpaceManagement {
+public class SpaceManagement extends AbstractManagement{
 
-    private CommandWebServiceSoap client = CommandWebServiceClient.getInstance();
+
 
     public void setLanguageForUser(String token, String user, String locale){
-        this.client.setLanguageForUser(token,user,locale);
+        this.getClient().setLanguageForUser(token,user,locale);
     }
 
     public void deleteSpace(String token, String spaceId){
-        client.deleteSpace(token,spaceId);
+        getClient().deleteSpace(token,spaceId);
     }
 
     public void deleteSubjectArea(String token, String spaceId, String name){
-        client.deleteSubjectArea(token,spaceId,name);
+        getClient().deleteSubjectArea(token,spaceId,name);
     }
 
     public void executeQueryInSpace(String token, String query, String spaceId){
-        client.executeQueryInSpace(token,query,spaceId);
+        getClient().executeQueryInSpace(token,query,spaceId);
     }
 
     public void extractCloudConnectorData(String token, String spaceId, String connectionName){
@@ -32,11 +32,11 @@ public class SpaceManagement {
         CloudConnection cc = new CloudConnection();
         cc.setConnectionName(connectionName);
         cloudConnections.getCloudConnection().add(cc);
-        client.extractCloudConnectorData(token,spaceId,cloudConnections);
+        getClient().extractCloudConnectorData(token,spaceId,cloudConnections);
     }
 
     public void clearCacheInSpace(String token, String spaceId){
-        client.clearCacheInSpace(token,spaceId);
+        getClient().clearCacheInSpace(token,spaceId);
     }
 
 }

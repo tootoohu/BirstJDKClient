@@ -8,6 +8,7 @@ import javax.persistence.*;
  * The persistent class for the BI_Dim_Currency_Code_Mst_View database table.
  * 
  */
+@Deprecated
 @Entity
 @Table(name="BI_Dim_Currency_Code_Mst_View")
 //@NamedQuery(name="CurrencyCode.findAll", query="SELECT c FROM CurrencyCode c")

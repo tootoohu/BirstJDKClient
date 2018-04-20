@@ -25,7 +25,7 @@ public class XMLParserTest {
         XMLParser parser = new XMLParser();
         for (File file: files ) {
             Document doc = parser.getDoc(file.getAbsolutePath());
-            Map map =  parser.getSourceList(doc);
+            Map map =  parser.getSourceList(doc, true);
             System.out.println();
         }
 

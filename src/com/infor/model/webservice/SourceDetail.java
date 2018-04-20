@@ -5,7 +5,7 @@ import com.birst.ArrayOfString;
 
 import java.util.Date;
 import java.util.List;
-
+@Deprecated
 public class SourceDetail {
 
     private String name;

@@ -8,6 +8,7 @@ import javax.persistence.*;
  * The persistent class for the BI_Dim_Sites_Mst_View database table.
  * 
  */
+@Deprecated
 @Entity
 @Table(name="BI_Dim_Sites_Mst_View")
 //@NamedQuery(name="Site.findAll", query="SELECT s FROM Site s")

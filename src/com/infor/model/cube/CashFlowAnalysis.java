@@ -10,6 +10,7 @@ import java.sql.Timestamp;
  * The persistent class for the BI_Fact_Cash_Flow_Analysis_Actual_Full_BV_View database table.
  * 
  */
+@Deprecated
 @Entity
 @Table(name="BI_Fact_Cash_Flow_Analysis_Actual_Full_BV_View")
 //@NamedQuery(name="CashFlowAnalysis.findAll", query="SELECT c FROM CashFlowAnalysis c")

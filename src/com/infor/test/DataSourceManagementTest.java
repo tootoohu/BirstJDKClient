@@ -23,11 +23,16 @@ public class DataSourceManagementTest extends AbstractTest{
     }
 
     @Test
+    public void getHierarchy() throws Exception {
+        dataSourceManagement.getHierarchy(getToken(),getSpaceId(),"test");
+    }
+
+    @Test
     public void createHierarchy() throws Exception {
         HierarchyMetadata hierarchyMetadata = new HierarchyMetadata();
         hierarchyMetadata.setName("Financial Income QA Analysis");
 
-        dataSourceManagement.createHierarchy(getToken(),getSpaceId(),hierarchyMetadata);
+        dataSourceManagement.createHierarchy(getToken(),getSpaceId(),null,null);
     }
 
     DataSourceManagement dataSourceManagement = new DataSourceManagement();
@@ -40,8 +45,8 @@ public class DataSourceManagementTest extends AbstractTest{
     }
 
     
-    @After
-    public void tearDown() throws Exception {
+   // @After
+    public void tearDown1() throws Exception {
 
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("itcast");
         EntityManager em = factory.createEntityManager();
@@ -64,6 +69,7 @@ public class DataSourceManagementTest extends AbstractTest{
 
     @Test
     public void deleteHierarchy() throws Exception {
+        dataSourceManagement.deleteHierarchy(getToken(),getSpaceId(),"Sales Controlling Account");
 
     }
 

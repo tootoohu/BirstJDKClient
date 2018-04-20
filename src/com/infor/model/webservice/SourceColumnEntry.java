@@ -6,13 +6,29 @@ public class SourceColumnEntry {
 
     private String type;
 
-    private String width;
+    private int width;
 
     private String dimension;
 
     private boolean isMeasure;
 
     private boolean analyzeByDate;
+
+    private boolean isKey;
+
+    public SourceColumnEntry(String name, String type, int width) {
+        this.name = name;
+        this.type = type;
+        this.width = width;
+    }
+
+    public boolean isKey() {
+        return isKey;
+    }
+
+    public void setKey(boolean key) {
+        isKey = key;
+    }
 
     public String getName() {
         return name;
@@ -30,11 +46,11 @@ public class SourceColumnEntry {
         this.type = type;
     }
 
-    public String getWidth() {
+    public int getWidth() {
         return width;
     }
 
-    public void setWidth(String width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
@@ -47,7 +63,7 @@ public class SourceColumnEntry {
     }
 
     public boolean isMeasure() {
-        return isMeasure;
+        return this.type.equalsIgnoreCase("Float") || type.equalsIgnoreCase("Integer");
     }
 
     public void setMeasure(boolean measure) {
@@ -55,9 +71,14 @@ public class SourceColumnEntry {
     }
 
     public boolean isAnalyzeByDate() {
-        return analyzeByDate;
+        return getType().equalsIgnoreCase("Date") ||getType().equalsIgnoreCase("DateTime");
     }
 
+    public String getHierarchyName(String mainSourceName){
+        if(isMeasure || isAnalyzeByDate())
+            return mainSourceName;
+        return this.name;
+    }
     public void setAnalyzeByDate(boolean analyzeByDate) {
         this.analyzeByDate = analyzeByDate;
     }

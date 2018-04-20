@@ -8,6 +8,7 @@ import javax.persistence.*;
  * The persistent class for the BI_Dim_Certification_Skill_Mst_View database table.
  * 
  */
+@Deprecated
 @Entity
 @Table(name="BI_Dim_Certification_Skill_Mst_View")
 //@NamedQuery(name="CertificationSkill.findAll", query="SELECT c FROM CertificationSkill c")

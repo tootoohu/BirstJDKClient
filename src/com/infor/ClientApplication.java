@@ -1,9 +1,11 @@
 package com.infor;
 
+import com.birst.ArrayOfSourceColumnSubClass;
+import com.birst.SourceColumnSubClass;
+import com.birst.StagingTableSubClass;
 import com.infor.admin.DataSourceManagement;
 import com.infor.model.webservice.BirstProperties;
 import com.infor.model.webservice.LoginToken;
-import com.infor.model.webservice.SourceDetail;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -43,9 +45,16 @@ public class ClientApplication {
     private static void init(){
         BirstProperties properties = new BirstProperties("/resources/birst.properties");
         String address = properties.getAddress();
-        String userName = properties.getUser();
-        String pwd = properties.getPassword();
-        spaceId = properties.getSpaceId();
+        String userName = null;
+        String pwd = null;
+        try {
+            userName = properties.getUser();
+             pwd = properties.getPassword();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        spaceId = properties.getTargetSpaceId();
         LoginToken loginToken = new LoginToken();
         loginToken.Login(userName,pwd);
         token = loginToken.getToken();
@@ -71,10 +80,11 @@ public class ClientApplication {
 
     private static void getSourceDetail(String name){
 
-        SourceDetail detail = dataSourceManagement.getSourceDetails(token,spaceId,name);
+        StagingTableSubClass detail = dataSourceManagement.getSourceDetails(token,spaceId,name);
 
-        List<SourceDetail.SourceColumn> columns = detail.getColumns();
-        for (SourceDetail.SourceColumn column: columns ) {
+        ArrayOfSourceColumnSubClass columns = detail.getColumns();
+
+        for (SourceColumnSubClass column: columns.getSourceColumnSubClass() ) {
             System.out.print(column.getName() + "       ");
             System.out.print(" Data Type: " + column.getDataType() + " ");
             System.out.print(" Width: " + column.getWidth());

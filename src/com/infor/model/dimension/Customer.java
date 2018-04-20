@@ -9,6 +9,7 @@ import java.math.BigDecimal;
  * The persistent class for the BI_Dim_Customer_BV_View database table.
  * 
  */
+@Deprecated
 @Entity
 @Table(name="BI_Dim_Customer_BV_View")
 @NamedQuery(name="Customer.findAll", query="SELECT c FROM Customer c")

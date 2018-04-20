@@ -8,6 +8,7 @@ import javax.persistence.*;
  * The persistent class for the BI_Dim_Partner_Mst_View database table.
  * 
  */
+@Deprecated
 @Entity
 //@NamedQuery(name="BI_Dim_Partner_Mst_View.findAll", query="SELECT b FROM BI_Dim_Partner_Mst_View b")
 public class Partner implements Serializable {

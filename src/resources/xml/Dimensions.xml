@@ -1,6 +1,6 @@
 <Dimensions>
     <Dimension name="Account">
-        <property name="Account" type="Varchar" width="21"></property>
+        <property name="Account" type="Varchar" width="21" key="Y"></property>
         <property name="Account Type" type="Varchar" width="3"></property>
         <property name="Account Description" type="Varchar" width="40"></property>
         <property name="Type Description" type="Varchar" width="21"></property>
@@ -10,7 +10,7 @@
     <Dimension name="Site">
         <property name="Parent" type="Varchar" width="9"></property>
         <property name="Site Type" type="Varchar" width="4"></property>
-        <property name="Site Name" type="Varchar" width="9"></property>
+        <property name="Site Name" type="Varchar" width="9" key="Y"></property>
         <property name="Company" type="Varchar" width="31"></property>
         <property name="Address1" type="Varchar" width="20"></property>
         <property name="Address2" type="Varchar" width="20"></property>
@@ -23,25 +23,24 @@
         <property name="Zip" type="Integer" width="5"></property>
         <property name="Email" type="Varchar" width="20"></property>
     </Dimension>
-    <Dimension name="Currency Code">
-        <property name="Currency Code" type="Varchar" width="3"></property>
-        <property name="Currency Code Description" type="Varchar" width="40"></property>
-
+    <Dimension name="CSIConnect_Currency Code">
+        <property name="Currency Code" type="Varchar" width="3" key="Y"></property>
+        <property name="Currency Code Description" type="Varchar" width="60"></property>
     </Dimension>
-    <Dimension name="Unit Code 1">
-        <property name="Unit Code 1" type="Varchar" width="3"></property>
+    <Dimension name="CSIConnect_Unit Code 1">
+        <property name="Unit Code 1" type="Varchar" width="3" key="Y"></property>
         <property name="Unit Code 1 Description" type="Varchar" width="35"></property>
     </Dimension>
-    <Dimension name="Unit Code 2">
-        <property name="Unit Code 2" type="Varchar" width="3"></property>
+    <Dimension name="CSIConnect_Unit Code 2">
+        <property name="Unit Code 2" type="Varchar" width="3" key="Y"></property>
         <property name="Unit Code 2 Description" type="Varchar" width="35"></property>
     </Dimension>
     <Dimension name="Unit Code 3">
-        <property name="Unit Code 3" type="Varchar" width="3"></property>
+        <property name="Unit Code 3" type="Varchar" width="3" key="Y"></property>
         <property name="Unit Code 3 Description" type="Varchar" width="35"></property>
     </Dimension>
     <Dimension name="Unit Code 4">
-        <property name="Unit Code 4" type="Varchar" width="3"></property>
+        <property name="Unit Code 4" type="Varchar" width="3" key="Y"></property>
         <property name="Unit Code 4 Description" type="Varchar" width="35"></property>
     </Dimension>
 
