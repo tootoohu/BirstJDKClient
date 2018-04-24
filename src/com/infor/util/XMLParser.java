@@ -1,9 +1,6 @@
 package com.infor.util;
 
-import com.birst.ArrayOfLevelMetadata;
-import com.birst.HierarchyMetadata;
-import com.birst.LevelMetadata;
-import com.birst.StagingTableSubClass;
+import com.birst.*;
 import com.infor.model.webservice.SourceColumnEntry;
 import com.infor.model.webservice.SourceEntry;
 import org.w3c.dom.*;
@@ -27,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public  class XMLParser {
 
@@ -121,26 +119,183 @@ public  class XMLParser {
 
     }
 
-    public void WriteSourceList(String spaceID, List<StagingTableSubClass> list){
-        File f = new File("/resources/xml/source/"+spaceID + "_Source.xml");
+    public void WriteSourceList(String spaceName, List<StagingTableSubClass> list){
+        File file = PrepareFile(spaceName, "Sources.xml");
+
+        doc = db.newDocument();
+        Element root = doc.createElement("Sources");
+        doc.appendChild(root);
+
+        for(StagingTableSubClass subClass : list){
+           Element sourceNode = doc.createElement("Source");
+            Attr nameAttr = doc.createAttribute("Name");
+            nameAttr.setValue(subClass.getName());
+            sourceNode.setAttributeNode(nameAttr);
+
+            Attr origAttr = doc.createAttribute("OriginalName");
+            origAttr.setValue(subClass.getName());
+            sourceNode.setAttributeNode(origAttr);
+
+            Attr disAttr = doc.createAttribute("Disabled");
+            disAttr.setValue(subClass.getName());
+            sourceNode.setAttributeNode(disAttr);
+
+            Attr lastAttr = doc.createAttribute("LastModifiedDate");
+            lastAttr.setValue(subClass.getName());
+            sourceNode.setAttributeNode(lastAttr);
+
+            //<Script>
+            Element scriptsNode = doc.createElement("Scripts");
+            ScriptDefinition sd = subClass.getScript();
+            Element inputNode = doc.createElement("InputQuery");
+            Element outputNode = doc.createElement("Output");
+            Element scriptNode = doc.createElement("Script");
+            if(sd != null){
+                inputNode.appendChild(doc.createTextNode(sd.getInputQuery()));
+                outputNode.appendChild(doc.createTextNode(sd.getOutput()));
+                scriptNode.appendChild(doc.createTextNode(sd.getScript()));
+            }
+
+            scriptsNode.appendChild(inputNode);
+            scriptsNode.appendChild(outputNode);
+            scriptsNode.appendChild(scriptNode);
+
+            sourceNode.appendChild(scriptsNode);
+
+            //<Columns>
+            Element columns = doc.createElement("Columns");
+            List<SourceColumnSubClass> columnList = subClass.getColumns().getSourceColumnSubClass();
+           /* for(SourceColumnSubClass sub : columnList){
+
+                Element column = doc.createElement("Column");
+                Attr name = doc.createAttribute("Name");
+                name.setValue(sub.getName());
+                column.setAttributeNode(name);
+
+                Attr origName = doc.createAttribute("OriginalName");
+                origName.setValue(sub.getOriginalName());
+                column.setAttributeNode(origName);
+
+                Element analyzeMeasure = doc.createElement("AnalyzeMeasure");
+                analyzeMeasure.appendChild(doc.createTextNode(sub.isAnalyzeMeasure() != null? sub.isAnalyzeMeasure().toString(): ""));
+                column.appendChild(analyzeMeasure);
+
+                Element dataType = doc.createElement("DataType");
+                dataType.appendChild(doc.createTextNode(sub.getDataType()));
+                column.appendChild(dataType);
+
+                Element format = doc.createElement("Format");
+                format.appendChild(doc.createTextNode(sub.getFormat()));
+                column.appendChild(format);
 
 
+                Element enableSecutityFilter = doc.createElement("EnableSecutityFilter");
+                enableSecutityFilter.appendChild(doc.createTextNode(Boolean.toString(sub.isEnableSecutityFilter())));
+                column.appendChild(enableSecutityFilter);
 
+                Element sourceFileColumn = doc.createElement("SourceFileColumn");
+                sourceFileColumn.appendChild(doc.createTextNode(sub.getSourceFileColumn()));
+                column.appendChild(sourceFileColumn);
+
+                Element targetAggregations = doc.createElement("TargetAggregations");
+                if(sub.getTargetAggregations() != null){
+                    String aggrStr = sub.getTargetAggregations().getString().stream().collect(Collectors.joining(","));
+                    targetAggregations.appendChild(doc.createTextNode(aggrStr));
+                }
+
+                column.appendChild(targetAggregations);
+
+                Element targetTypes = doc.createElement("TargetTypes");
+                if(sub.getTargetTypes()!= null){
+                    String typeStr = sub.getTargetTypes().getString().stream().collect(Collectors.joining(","));
+                    targetTypes.appendChild(doc.createTextNode(typeStr));
+                }
+
+                column.appendChild(targetTypes);
+
+                Element unknownValue = doc.createElement("UnknownValue");
+                unknownValue.appendChild(doc.createTextNode(sub.getUnknownValue()));
+                column.appendChild(unknownValue);
+
+                Element width = doc.createElement("Width");
+                width.appendChild(doc.createTextNode(String.valueOf(sub.getWidth())));
+                column.appendChild(width);
+
+                Element hierarchyName = doc.createElement("HierarchyName");
+                hierarchyName.appendChild(doc.createTextNode(sub.getHierarchyName()));
+                column.appendChild(hierarchyName);
+
+                Element levelName = doc.createElement("LevelName");
+                levelName.appendChild(doc.createTextNode(sub.getLevelName()));
+                column.appendChild(levelName);
+
+                Element levels = doc.createElement("Levels");
+
+                List<ArrayOfString> levelStrs = sub.getLevels().getArrayOfString();
+                for (ArrayOfString aos : levelStrs){
+                    Element level = doc.createElement("Level");
+                    String levelText = aos.getString().stream().collect(Collectors.joining(","));
+                    level.appendChild(doc.createTextNode(levelText));
+                    levels.appendChild(level);
+                }
+
+                column.appendChild(levels);
+
+                Element analyzeByDate = doc.createElement("AnalyzeByDate");
+                analyzeByDate.appendChild(doc.createTextNode(Boolean.toString(sub.isAnalyzeByDate())));
+                column.appendChild(analyzeByDate);
+
+                Element measure = doc.createElement("Measure");
+                measure.appendChild(doc.createTextNode(Boolean.toString(sub.isMeasure())));
+                column.appendChild(measure);
+
+                Element lockType = doc.createElement("LockType");
+                lockType.appendChild(doc.createTextNode(Boolean.toString(sub.isLockType())));
+                column.appendChild(lockType);
+
+                columns.appendChild(column);
+            } // end of for columns
+            */
+            sourceNode.appendChild(columns);
+
+           root.appendChild(sourceNode);
+
+
+        }
+
+
+        //write to xml
+        try {
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            DOMSource source = new DOMSource(doc);
+            file.createNewFile();
+            StreamResult result = new StreamResult(file);
+            transformer.transform(source, result);
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void WriteHierarchy(){
 
-    }
-
-    public void WriteHierarchyList(String spaceName, List<HierarchyMetadata> hierarchies) throws TransformerException {
-        File directory = new File( Paths.get("").toAbsolutePath().toString() + "/resources/" + spaceName);
+    private File PrepareFile(String path, String name){
+        File directory = new File( Paths.get("").toAbsolutePath().toString() + "/src/resources/" + path);
         if(!directory.exists()){
             directory.mkdirs();
         }
-        File file = new File(Paths.get("").toAbsolutePath().toString() +  "/resources/" + spaceName +  "/Hierarchhies.xml");
+        File file = new File(Paths.get("").toAbsolutePath().toString() +  "/src/resources/" + path +  "/" + name);
         if(file.exists()){
             file.delete();
         }
+        return file;
+    }
+
+    public void WriteHierarchyList(String spaceName, List<HierarchyMetadata> hierarchies){
+
+        File file = PrepareFile(spaceName, "Hierarchhies.xml");
 
         doc = db.newDocument();
         Element root = doc.createElement("Hierarchies");
@@ -185,6 +340,8 @@ public  class XMLParser {
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
             e.printStackTrace();
         }
 

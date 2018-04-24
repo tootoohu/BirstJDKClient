@@ -27,8 +27,8 @@ public class BackupManagement {
         DataSourceContainer dsc = dataSourceManagement.ReadFromSpace(tokenId, spaceId);
         try {
             XMLParser xmlParser = new XMLParser();
-            xmlParser.WriteHierarchyList(spaceName, dsc.getHierarchies());
-
+          //  xmlParser.WriteHierarchyList(spaceName, dsc.getHierarchies());
+            xmlParser.WriteSourceList(spaceName,dsc.getSources());
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
