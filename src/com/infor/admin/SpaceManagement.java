@@ -9,8 +9,6 @@ import java.util.List;
 
 public class SpaceManagement extends AbstractManagement{
 
-
-
     public void setLanguageForUser(String token, String user, String locale){
         this.getClient().setLanguageForUser(token,user,locale);
     }

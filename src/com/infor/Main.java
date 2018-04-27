@@ -2,7 +2,7 @@ package com.infor;
 
 import com.birst.HierarchyMetadata;
 import com.birst.StagingTableSubClass;
-import com.infor.admin.BackupManagement;
+import com.infor.admin.ExportManagement;
 import com.infor.admin.DataSourceManagement;
 import com.infor.model.webservice.BirstProperties;
 import com.infor.model.webservice.SourceColumnEntry;
@@ -30,13 +30,12 @@ public class Main extends Application {
 
 
     private DataSourceContainer dataSourceContainer;
-    private TableView<SourceColumnEntry> table = new TableView<SourceColumnEntry>();
+    private TableView<SourceColumnEntry> table = new TableView<>();
     private SourceEntry currentSourceEntry;
     private BirstProperties birstProperties;
 
-
     private DataSourceManagement dataSourceManagement =  new DataSourceManagement();
-    private BackupManagement backupManagement;
+    private ExportManagement exportManagement;
     @Override
     public void start(Stage primaryStage) throws Exception{
         initialize();
@@ -55,7 +54,7 @@ public class Main extends Application {
         birstProperties = new BirstProperties("/resources/birst.properties");
         dataSourceContainer = new DataSourceContainer();
         dataSourceContainer.loadXmlDocument();
-        backupManagement = new BackupManagement(dataSourceManagement);
+         exportManagement = new ExportManagement(dataSourceManagement);
         }
 
     private Tab loadAdminTab(){
@@ -75,13 +74,10 @@ public class Main extends Application {
         rootTreeItem.getChildren().add(dimensionRoot);
         loadTreeItems(dimensionRoot, dataSourceContainer.getDimensionMap());
 
-        treeView.getSelectionModel().selectedItemProperty().addListener(new javafx.beans.value.ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                TreeItem treeItem = (TreeItem) newValue;
-                refreshTableData(treeItem);
+        treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            TreeItem treeItem = (TreeItem) newValue;
+            refreshTableData(treeItem);
 
-            }
         });
 
         treePane.getChildren().add(treeView);
@@ -117,17 +113,21 @@ public class Main extends Application {
         buttonMenuPane.setHgap(6);
         buttonMenuPane.setAlignment(Pos.BASELINE_LEFT);
 
-        Button backupBtn = new Button("Backup");
-        backupBtn.setOnAction(new EventHandler<ActionEvent>() {
+        Button exportBtn = new Button("Export");
+        exportBtn.setOnAction(event -> exportManagement.Export(birstProperties.getLoginToken(),
+                birstProperties.getSourceSpaceId(),birstProperties.getSourceSpaceName()));
+
+        Button importBtn = new Button("Import");
+        exportBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                backupManagement.Bakup(birstProperties.getLoginToken(),birstProperties.getSourceSpaceId(),birstProperties.getSourceSpaceName());
+             //   backupManagement.Bakup(birstProperties.getLoginToken(),birstProperties.getSourceSpaceId(),birstProperties.getSourceSpaceName());
             }
         });
 
-        backupBtn.setPrefSize(110,30);
-        backupBtn.setLayoutX(100);
-        buttonMenuPane.getChildren().addAll(updatebtn,backupBtn);
+        exportBtn.setPrefSize(110,30);
+        exportBtn.setLayoutX(100);
+        buttonMenuPane.getChildren().addAll(updatebtn,exportBtn,importBtn);
 
         StackPane tablePane = new StackPane();
         tablePane.getChildren().add(table);

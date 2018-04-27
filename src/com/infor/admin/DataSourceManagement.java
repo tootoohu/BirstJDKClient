@@ -6,7 +6,7 @@ import com.infor.model.webservice.SourceColumnEntry;
 import com.infor.model.webservice.SourceDetail;
 import com.infor.model.webservice.SourceEntry;
 import com.infor.util.DataSourceContainer;
-import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+//import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -21,8 +21,7 @@ public class DataSourceManagement extends AbstractManagement{
 
     public List<String> getSourcesList(String token, String spaceId){
         ArrayOfString sources = getClient().getSourcesList(token,spaceId);
-        List<String> ret = sources.getString();
-        return ret;
+        return sources.getString();
     }
 
     public List<String> getAllHierarchies(String token, String spaceId){

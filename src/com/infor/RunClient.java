@@ -4,8 +4,7 @@ import com.birst.*;
 import com.infor.model.webservice.BirstProperties;
 import com.infor.util.XMLParser;
 import org.xml.sax.SAXException;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -13,8 +12,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.ws.BindingProvider;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -32,13 +29,7 @@ public class RunClient {
             String path = Paths.get("").toAbsolutePath().toString();
             System.out.println(path);
 
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
+        } catch (ParserConfigurationException | SAXException | TransformerException e) {
             e.printStackTrace();
         }
 

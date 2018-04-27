@@ -3,6 +3,8 @@ package com.infor.util;
 import com.birst.*;
 import com.infor.model.webservice.SourceColumnEntry;
 import com.infor.model.webservice.SourceEntry;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.sun.xml.internal.ws.util.StringUtils;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -114,10 +116,6 @@ public  class XMLParser {
        return  maps;
     }
 
-    public void WriteSource(StagingTableSubClass stagingTableSubClass){
-
-
-    }
 
     public void WriteSourceList(String spaceName, List<StagingTableSubClass> list){
         File file = PrepareFile(spaceName, "Sources.xml");
@@ -137,7 +135,7 @@ public  class XMLParser {
             sourceNode.setAttributeNode(origAttr);
 
             Attr disAttr = doc.createAttribute("Disabled");
-            disAttr.setValue(subClass.getName());
+            disAttr.setValue(Boolean.toString(subClass.isDisabled()));
             sourceNode.setAttributeNode(disAttr);
 
             Attr lastAttr = doc.createAttribute("LastModifiedDate");
@@ -165,7 +163,7 @@ public  class XMLParser {
             //<Columns>
             Element columns = doc.createElement("Columns");
             List<SourceColumnSubClass> columnList = subClass.getColumns().getSourceColumnSubClass();
-           /* for(SourceColumnSubClass sub : columnList){
+            for(SourceColumnSubClass sub : columnList){
 
                 Element column = doc.createElement("Column");
                 Attr name = doc.createAttribute("Name");
@@ -185,16 +183,16 @@ public  class XMLParser {
                 column.appendChild(dataType);
 
                 Element format = doc.createElement("Format");
-                format.appendChild(doc.createTextNode(sub.getFormat()));
+                format.appendChild(doc.createTextNode(sub.getFormat() != null ? sub.getFormat(): ""));
+                System.out.println("format = " + sub.getFormat());
                 column.appendChild(format);
-
 
                 Element enableSecutityFilter = doc.createElement("EnableSecutityFilter");
                 enableSecutityFilter.appendChild(doc.createTextNode(Boolean.toString(sub.isEnableSecutityFilter())));
                 column.appendChild(enableSecutityFilter);
 
                 Element sourceFileColumn = doc.createElement("SourceFileColumn");
-                sourceFileColumn.appendChild(doc.createTextNode(sub.getSourceFileColumn()));
+                sourceFileColumn.appendChild(doc.createTextNode(sub.getSourceFileColumn() != null ? sub.getSourceFileColumn() : ""));
                 column.appendChild(sourceFileColumn);
 
                 Element targetAggregations = doc.createElement("TargetAggregations");
@@ -214,7 +212,7 @@ public  class XMLParser {
                 column.appendChild(targetTypes);
 
                 Element unknownValue = doc.createElement("UnknownValue");
-                unknownValue.appendChild(doc.createTextNode(sub.getUnknownValue()));
+                unknownValue.appendChild(doc.createTextNode(sub.getUnknownValue() != null? sub.getUnknownValue() :""));
                 column.appendChild(unknownValue);
 
                 Element width = doc.createElement("Width");
@@ -222,11 +220,11 @@ public  class XMLParser {
                 column.appendChild(width);
 
                 Element hierarchyName = doc.createElement("HierarchyName");
-                hierarchyName.appendChild(doc.createTextNode(sub.getHierarchyName()));
+                hierarchyName.appendChild(doc.createTextNode(sub.getHierarchyName() != null ? sub.getHierarchyName() : ""));
                 column.appendChild(hierarchyName);
 
                 Element levelName = doc.createElement("LevelName");
-                levelName.appendChild(doc.createTextNode(sub.getLevelName()));
+                levelName.appendChild(doc.createTextNode(sub.getLevelName() != null ? sub.getLevelName() : ""));
                 column.appendChild(levelName);
 
                 Element levels = doc.createElement("Levels");
@@ -255,7 +253,7 @@ public  class XMLParser {
 
                 columns.appendChild(column);
             } // end of for columns
-            */
+
             sourceNode.appendChild(columns);
 
            root.appendChild(sourceNode);
@@ -271,6 +269,7 @@ public  class XMLParser {
             file.createNewFile();
             StreamResult result = new StreamResult(file);
             transformer.transform(source, result);
+            System.out.println("write xml done");
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {

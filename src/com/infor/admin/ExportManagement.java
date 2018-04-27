@@ -12,18 +12,19 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.List;
 
-public class BackupManagement {
+public class ExportManagement {
 
 
     private DataSourceManagement dataSourceManagement;
 
 
-    public BackupManagement(DataSourceManagement dsm){
+    public ExportManagement(DataSourceManagement dsm){
+
         this.dataSourceManagement = dsm;
     }
 
 
-    public void Bakup(String tokenId, String spaceId, String spaceName){
+    public void Export(String tokenId, String spaceId, String spaceName){
         DataSourceContainer dsc = dataSourceManagement.ReadFromSpace(tokenId, spaceId);
         try {
             XMLParser xmlParser = new XMLParser();

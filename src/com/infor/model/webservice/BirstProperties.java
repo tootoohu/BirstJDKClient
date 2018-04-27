@@ -1,8 +1,7 @@
 package com.infor.model.webservice;
 
-import sun.misc.BASE64Decoder;
-
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Properties;
 
 public class BirstProperties {
@@ -39,13 +38,14 @@ public class BirstProperties {
     }
 
     public  String getUser() throws IOException {
-        return new String((new BASE64Decoder()).decodeBuffer(properties.getProperty(userKey)));
+        Base64.Decoder decoder = Base64.getDecoder();
+        return new String( decoder.decode(properties.getProperty(userKey)));
 
     }
 
     public  String getPassword() throws IOException {
-
-        return new String((new BASE64Decoder()).decodeBuffer(properties.getProperty(pwdKey)));
+        Base64.Decoder decoder = Base64.getDecoder();
+        return new String(decoder.decode(properties.getProperty(pwdKey)));
     }
 
     public  String getSourceSpaceName(){
