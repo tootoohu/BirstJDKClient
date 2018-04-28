@@ -1,29 +1,23 @@
-package com.infor;
+package com.infor.ui;
 
 import com.birst.HierarchyMetadata;
 import com.birst.StagingTableSubClass;
-import com.infor.admin.ExportManagement;
 import com.infor.admin.DataSourceManagement;
+import com.infor.admin.ExportManagement;
 import com.infor.model.webservice.BirstProperties;
 import com.infor.model.webservice.SourceColumnEntry;
 import com.infor.model.webservice.SourceEntry;
-import com.infor.ui.LocalTabGenerator;
 import com.infor.util.BirstXmlReader;
 import com.infor.util.DataSourceContainer;
-import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -33,39 +27,21 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class Main extends Application {
+public class LocalTabGenerator {
 
+    private static BirstProperties birstProperties = BirstProperties.getInstance();
 
-    private DataSourceContainer dataSourceContainer;
-    private TableView<SourceColumnEntry> table = new TableView<>();
-    private SourceEntry currentSourceEntry;
-    private BirstProperties birstProperties;
+    private static  DataSourceManagement dataSourceManagement =  new DataSourceManagement();
 
-    private DataSourceManagement dataSourceManagement =  new DataSourceManagement();
-    private ExportManagement exportManagement;
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        initialize();
-        TabPane mainPane = new TabPane();
-        mainPane.setPrefSize(1000, 1000);
+   // private static SourceEntry currentSourceEntry;
 
-        Tab localTab = LocalTabGenerator.loadTab(dataSourceContainer,table,exportManagement,currentSourceEntry);
-       // mainPane.getTabs().add(loadAdminTab());
-
-        primaryStage.setTitle("Birst Desktop Client");
-        primaryStage.setScene(new Scene(mainPane, 1000, 600));
-        primaryStage.show();
-
-    }
-
-    private void initialize(){
-        birstProperties = BirstProperties.getInstance();
-        dataSourceContainer = new DataSourceContainer();
-        dataSourceContainer.loadXmlDocument();
-        exportManagement = new ExportManagement(dataSourceManagement);
+    private static void loadTreeItems(TreeItem treeItem, Map<SourceEntry, List<SourceColumnEntry>> map){
+        for(Map.Entry<SourceEntry, List<SourceColumnEntry>> entry: map.entrySet()){
+            TreeItem item = new TreeItem(entry.getKey());
+            treeItem.getChildren().add(item);
         }
-
-    private Tab loadAdminTab(){
+    }
+    public static Tab loadTab(DataSourceContainer dataSourceContainer,TableView<SourceColumnEntry> table, ExportManagement exportManagement, SourceEntry currentSourceEntry){
 
         Tab adminTab = new Tab();
         adminTab.setText("Admin");
@@ -84,19 +60,19 @@ public class Main extends Application {
 
         treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             TreeItem treeItem = (TreeItem) newValue;
-            refreshTableData(treeItem);
+            refreshTableData(dataSourceContainer,treeItem, table, currentSourceEntry);
 
         });
 
         treePane.getChildren().add(treeView);
 
         SplitPane rightPane = new SplitPane();
-        loadTableView();
+        loadTableView(table);
         Button updatebtn = new Button("Update");
         updatebtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-               HierarchyMetadata hm = dataSourceManagement.getHierarchy(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry.getName());
+                HierarchyMetadata hm = dataSourceManagement.getHierarchy(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry.getName());
 
                 if(hm != null && hm.getChildren().getLevelMetadata() != null){
                     dataSourceManagement.updateHierarchy(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry,dataSourceContainer.getByKey(currentSourceEntry));
@@ -107,7 +83,7 @@ public class Main extends Application {
 
                 StagingTableSubClass tableSubClass = dataSourceManagement.getSourceDetails(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry.getName());
                 if (tableSubClass != null){
-                   dataSourceManagement.setSourceDetails(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry,dataSourceContainer.getByKey(currentSourceEntry));
+                    dataSourceManagement.setSourceDetails(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry,dataSourceContainer.getByKey(currentSourceEntry));
                 }
 
             }
@@ -173,8 +149,15 @@ public class Main extends Application {
         return  adminTab;
     }
 
+    private static void refreshTableData(DataSourceContainer dataSourceContainer,TreeItem treeItem,TableView<SourceColumnEntry> table, SourceEntry currentSourceEntry){
+        if(treeItem.getValue() instanceof SourceEntry){
+            SourceEntry se = (SourceEntry) treeItem.getValue();
+            currentSourceEntry = se;
+            table.setItems(FXCollections.observableArrayList(dataSourceContainer.getByKey(se)));
+        }
+    }
 
-    private void loadTableView(){
+    private static void loadTableView(TableView<SourceColumnEntry> table){
         TableColumn nameCol = new TableColumn("Name");
         nameCol.setMinWidth(100);
         nameCol.setCellValueFactory(
@@ -192,28 +175,4 @@ public class Main extends Application {
 
         table.getColumns().addAll(nameCol, typeCol, widthCol);
     }
-
-
-    private void refreshTableData(TreeItem treeItem){
-        if(treeItem.getValue() instanceof SourceEntry){
-            SourceEntry se = (SourceEntry) treeItem.getValue();
-            currentSourceEntry = se;
-            table.setItems(FXCollections.observableArrayList(dataSourceContainer.getByKey(se)));
-        }
-    }
-
-    private void loadTreeItems(TreeItem treeItem, Map<SourceEntry, List<SourceColumnEntry>> map){
-        for(Map.Entry<SourceEntry, List<SourceColumnEntry>> entry: map.entrySet()){
-            TreeItem item = new TreeItem(entry.getKey());
-            treeItem.getChildren().add(item);
-        }
-    }
-
-
-    public static void main(String[] args) {
-
-        launch(args);
-    }
-
-
 }

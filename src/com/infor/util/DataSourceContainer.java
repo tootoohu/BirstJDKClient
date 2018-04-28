@@ -43,16 +43,16 @@ public class DataSourceContainer {
     }
 
     public void loadXmlDocument(){
-        XMLParser parser = null;
+        PlainXmlReader reader = null;
         if(cubeMap != null)
             return;
         cubeMap = new HashMap();
         dimensionMap = new HashMap();
 
         try {
-            parser = new XMLParser();
-            cubeMap =  parser.getSourceList("/resources/xml/Cubes.xml", true);
-            dimensionMap =  parser.getSourceList("/resources/xml/Dimensions.xml", false);
+            reader = new PlainXmlReader();
+            cubeMap =  reader.getSourceMap("/resources/xml/Cubes.xml", true);
+            dimensionMap =  reader.getSourceMap("/resources/xml/Dimensions.xml", false);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -62,6 +62,10 @@ public class DataSourceContainer {
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void loadBirstXmlDocument(){
 
     }
 

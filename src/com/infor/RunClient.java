@@ -2,15 +2,13 @@ package com.infor;
 
 import com.birst.*;
 import com.infor.model.webservice.BirstProperties;
-import com.infor.util.XMLParser;
+import com.infor.util.XMLReader;
 import org.xml.sax.SAXException;
 
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.ws.BindingProvider;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
@@ -24,14 +22,7 @@ public class RunClient {
 
       //  test();
        // init();
-        try {
-            XMLParser xmlParser = new XMLParser();
-            String path = Paths.get("").toAbsolutePath().toString();
-            System.out.println(path);
-
-        } catch (ParserConfigurationException | SAXException | TransformerException e) {
-            e.printStackTrace();
-        }
+        System.out.printf(String.valueOf(Boolean.valueOf(null)));
 
     }
 
