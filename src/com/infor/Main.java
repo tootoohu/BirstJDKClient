@@ -35,7 +35,6 @@ import java.util.Map;
 
 public class Main extends Application {
 
-
     private DataSourceContainer dataSourceContainer;
     private TableView<SourceColumnEntry> table = new TableView<>();
     private SourceEntry currentSourceEntry;
@@ -51,6 +50,7 @@ public class Main extends Application {
 
         Tab localTab = LocalTabGenerator.loadTab(dataSourceContainer,table,exportManagement,currentSourceEntry);
        // mainPane.getTabs().add(loadAdminTab());
+        mainPane.getTabs().add(localTab);
 
         primaryStage.setTitle("Birst Desktop Client");
         primaryStage.setScene(new Scene(mainPane, 1000, 600));

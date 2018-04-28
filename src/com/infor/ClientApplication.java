@@ -43,7 +43,7 @@ public class ClientApplication {
     }
 
     private static void init(){
-        BirstProperties properties = new BirstProperties("/resources/birst.properties");
+        BirstProperties properties = BirstProperties.getInstance();
         String address = properties.getAddress();
         String userName = null;
         String pwd = null;

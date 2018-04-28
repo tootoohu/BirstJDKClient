@@ -28,7 +28,7 @@ public class RunClient {
 
     public static void init(){
 
-        BirstProperties bp = new BirstProperties("/resources/birst.properties");
+        BirstProperties bp = BirstProperties.getInstance();
         System.out.println(bp.getAddress());
 
     }

@@ -13,7 +13,7 @@ public abstract class AbstractTest {
     @Before
     public void setUp() throws Exception {
 
-        BirstProperties properties = new BirstProperties("/resources/birst.properties");
+        BirstProperties properties = BirstProperties.getInstance();
         String address = properties.getAddress();
         String userName = properties.getUser();
         String pwd = properties.getPassword();
