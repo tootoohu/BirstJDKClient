@@ -1,18 +1,14 @@
 package com.infor.util;
 
 import com.birst.*;
-import com.sun.javafx.scene.shape.PathUtils;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
-
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 
 public class BirstXmlReader extends XMLReader {
@@ -25,7 +21,7 @@ public class BirstXmlReader extends XMLReader {
         Document doc = getDoc(path);
         Element rootElement = doc.getDocumentElement();
 
-        Map<String, StagingTableSubClass> map = new HashMap<>();
+        Map<String, StagingTableSubClass> map = new TreeMap<>();
         NodeList nodes = rootElement.getChildNodes();
         for(int i=0; i< nodes.getLength(); i++){
             StagingTableSubClass stsc = new StagingTableSubClass();
@@ -149,9 +145,8 @@ public class BirstXmlReader extends XMLReader {
     public Map<String, HierarchyMetadata> readHierarchies(String path){
         Document doc = getDoc(path);
 
-       // List<HierarchyMetadata> hierarchies = new ArrayList<>();
         Element rootElement = doc.getDocumentElement();
-        Map<String, HierarchyMetadata> map = new HashMap<>();
+        Map<String, HierarchyMetadata> map = new TreeMap<>();
         NodeList nodes = rootElement.getChildNodes();
         for(int i=0;i< nodes.getLength();i++){
             HierarchyMetadata hm = new HierarchyMetadata();
@@ -173,14 +168,21 @@ public class BirstXmlReader extends XMLReader {
 
                 NodeList columnList = levelElement.getChildNodes();
 
-                for(int k = 0; k< columnList.getLength();k++){
+               // Element columnElement = (Element)levelElement.getElementsByTagName(COLUMN_NODE);
+                ArrayOfString columnStrings = new ArrayOfString();
+                for(int k = 0; k<columnList.getLength();k++){
                     if(columnList.item(k).getNodeType() != Node.ELEMENT_NODE)
                         continue;
                     Element columnElement = (Element) columnList.item(k);
-                    lm.getColumnNames().getString().add(columnElement.getTextContent());
+                    String s = columnElement.getTextContent();
+                    columnStrings.getString().add(s);
                 }
-                hm.getChildren().getLevelMetadata().add(lm);
+                lm.setColumnNames(columnStrings);
+                ArrayOfLevelMetadata levelMetadata = new ArrayOfLevelMetadata();
+                levelMetadata.getLevelMetadata().add(lm);
+                hm.setChildren(levelMetadata);
             }
+
             map.put(hm.getName(), hm);
             //hierarchies.add(hm);
         }

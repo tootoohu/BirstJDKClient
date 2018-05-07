@@ -31,7 +31,11 @@ public class LocalTabGenerator {
 
     private static BirstProperties birstProperties = BirstProperties.getInstance();
 
-    private static  DataSourceManagement dataSourceManagement =  new DataSourceManagement();
+    private   DataSourceManagement dataSourceManagement =  new DataSourceManagement();
+
+    private ExportManagement exportManagement = new ExportManagement(dataSourceManagement);;
+
+    static SourceEntry currentSourceEntry;
 
    // private static SourceEntry currentSourceEntry;
 
@@ -41,8 +45,9 @@ public class LocalTabGenerator {
             treeItem.getChildren().add(item);
         }
     }
-    public static Tab loadTab(DataSourceContainer dataSourceContainer,TableView<SourceColumnEntry> table, ExportManagement exportManagement, SourceEntry currentSourceEntry){
 
+    public  Tab loadTab(DataSourceContainer dataSourceContainer){
+        TableView<SourceColumnEntry> table = new TableView<>();
         Tab adminTab = new Tab();
         adminTab.setText("Admin");
 
@@ -53,15 +58,14 @@ public class LocalTabGenerator {
         TreeItem cubeRoot = new TreeItem("Cubes");
         TreeView treeView = new TreeView<>(rootTreeItem);
         rootTreeItem.getChildren().add(cubeRoot);
-        loadTreeItems(cubeRoot, dataSourceContainer.getCubeMap());
+        loadTreeItems(cubeRoot, dataSourceContainer.getLocalCubeMap());
         TreeItem dimensionRoot = new TreeItem("Dimensions");
         rootTreeItem.getChildren().add(dimensionRoot);
-        loadTreeItems(dimensionRoot, dataSourceContainer.getDimensionMap());
+        loadTreeItems(dimensionRoot, dataSourceContainer.getLocalDimensionMap());
 
         treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             TreeItem treeItem = (TreeItem) newValue;
-            refreshTableData(dataSourceContainer,treeItem, table, currentSourceEntry);
-
+            refreshTableData(dataSourceContainer,treeItem, table);
         });
 
         treePane.getChildren().add(treeView);
@@ -76,7 +80,6 @@ public class LocalTabGenerator {
 
                 if(hm != null && hm.getChildren().getLevelMetadata() != null){
                     dataSourceManagement.updateHierarchy(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry,dataSourceContainer.getByKey(currentSourceEntry));
-
                 }else {
                     dataSourceManagement.createHierarchy(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry,dataSourceContainer.getByKey(currentSourceEntry));
                 }
@@ -85,7 +88,6 @@ public class LocalTabGenerator {
                 if (tableSubClass != null){
                     dataSourceManagement.setSourceDetails(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry,dataSourceContainer.getByKey(currentSourceEntry));
                 }
-
             }
         });
 
@@ -100,18 +102,14 @@ public class LocalTabGenerator {
         exportBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.printf("export!");
                 exportManagement.Export(birstProperties.getLoginToken(),birstProperties.getSourceSpaceId(),birstProperties.getSourceSpaceName());
             }
         });
-//        exportBtn.setOnAction(event -> exportManagement.Export(birstProperties.getLoginToken(),
-//                birstProperties.getSourceSpaceId(),birstProperties.getSourceSpaceName()));
 
         Button importBtn = new Button("Import");
         importBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.printf("import");
                 try {
                     BirstXmlReader bxr = new BirstXmlReader();
                     String path = new File("src/resources/Infor-CSI-Suite-10_0_0_0-Parent-Dev-Master/Sources.xml").getAbsolutePath();
@@ -125,7 +123,6 @@ public class LocalTabGenerator {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 //   backupManagement.Bakup(birstProperties.getLoginToken(),birstProperties.getSourceSpaceId(),birstProperties.getSourceSpaceName());
             }
         });
@@ -149,7 +146,7 @@ public class LocalTabGenerator {
         return  adminTab;
     }
 
-    private static void refreshTableData(DataSourceContainer dataSourceContainer,TreeItem treeItem,TableView<SourceColumnEntry> table, SourceEntry currentSourceEntry){
+    private  void refreshTableData(DataSourceContainer dataSourceContainer,TreeItem treeItem,TableView<SourceColumnEntry> table){
         if(treeItem.getValue() instanceof SourceEntry){
             SourceEntry se = (SourceEntry) treeItem.getValue();
             currentSourceEntry = se;
@@ -157,7 +154,7 @@ public class LocalTabGenerator {
         }
     }
 
-    private static void loadTableView(TableView<SourceColumnEntry> table){
+    private  void loadTableView(TableView<SourceColumnEntry> table){
         TableColumn nameCol = new TableColumn("Name");
         nameCol.setMinWidth(100);
         nameCol.setCellValueFactory(

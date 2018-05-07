@@ -18,12 +18,40 @@ public class DataSourceContainer {
 
     private static DataSourceContainer container;
 
-    private  Map<SourceEntry, List<SourceColumnEntry>> cubeMap;
-    private  Map<SourceEntry, List<SourceColumnEntry>> dimensionMap;
+    private  Map<SourceEntry, List<SourceColumnEntry>> localCubeMap;
+    private  Map<SourceEntry, List<SourceColumnEntry>> localDimensionMap;
 
     private List<HierarchyMetadata> hierarchies = new ArrayList<>();
 
     private List<StagingTableSubClass> sources = new ArrayList<>();
+
+    private  Map<String, StagingTableSubClass> birstXmlSourceMap;
+
+    private  Map<String, HierarchyMetadata> birstXmlHierarchyMap;
+
+    public static DataSourceContainer getContainer() {
+        return container;
+    }
+
+    public static void setContainer(DataSourceContainer container) {
+        DataSourceContainer.container = container;
+    }
+
+    public Map<String, StagingTableSubClass> getBirstXmlSourceMap() {
+        return birstXmlSourceMap;
+    }
+
+    public void setBirstXmlSourceMap(Map<String, StagingTableSubClass> birstXmlSourceMap) {
+        this.birstXmlSourceMap = birstXmlSourceMap;
+    }
+
+    public Map<String, HierarchyMetadata> getBirstXmlHierarchyMap() {
+        return birstXmlHierarchyMap;
+    }
+
+    public void setBirstXmlHierarchyMap(Map<String, HierarchyMetadata> birstXmlHierarchyMap) {
+        this.birstXmlHierarchyMap = birstXmlHierarchyMap;
+    }
 
     //    public static synchronized DataSourceContainer getInstance(){
 //        if(container == null){
@@ -33,26 +61,26 @@ public class DataSourceContainer {
 //        return container;
 //    }
 
-    public Map<SourceEntry, List<SourceColumnEntry>> getCubeMap() {
-        return cubeMap;
+    public Map<SourceEntry, List<SourceColumnEntry>> getLocalCubeMap() {
+        return localCubeMap;
     }
 
 
-    public Map<SourceEntry, List<SourceColumnEntry>> getDimensionMap() {
-        return dimensionMap;
+    public Map<SourceEntry, List<SourceColumnEntry>> getLocalDimensionMap() {
+        return localDimensionMap;
     }
 
     public void loadXmlDocument(){
         PlainXmlReader reader = null;
-        if(cubeMap != null)
+        if(localCubeMap != null)
             return;
-        cubeMap = new HashMap();
-        dimensionMap = new HashMap();
+        localCubeMap = new HashMap();
+        localDimensionMap = new HashMap();
 
         try {
             reader = new PlainXmlReader();
-            cubeMap =  reader.getSourceMap("/resources/xml/Cubes.xml", true);
-            dimensionMap =  reader.getSourceMap("/resources/xml/Dimensions.xml", false);
+            localCubeMap =  reader.getSourceMap("/resources/xml/Cubes.xml", true);
+            localDimensionMap =  reader.getSourceMap("/resources/xml/Dimensions.xml", false);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -72,9 +100,9 @@ public class DataSourceContainer {
     public List<SourceColumnEntry> getByKey(SourceEntry se){
         List<SourceColumnEntry> ret;
         if(se.isCube()){
-            ret = cubeMap.get(se);
+            ret = localCubeMap.get(se);
         }else {
-            ret = dimensionMap.get(se);
+            ret = localDimensionMap.get(se);
         }
         return ret;
 

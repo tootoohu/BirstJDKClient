@@ -21,6 +21,7 @@ public interface XmlInterface {
     static final String COLUMN_NODE = "Column";
     static final String ANALYZE_MEASURE_NODE = "AnalyzeMeasure";
     static final String DATA_TYPE_NODE = "DataType";
+
     static final String FORMAT_NODE = "Format";
     static final String ENABLE_SECURITY_FILTER_NODE = "EnableSecutityFilter";
     static final String SOURCE_FILE_COLUMN_NODE = "SourceFileColumn";
@@ -42,5 +43,9 @@ public interface XmlInterface {
 
     static final String SOURCES_FILE_NAME = "Sources.xml";
     static final String HIERARCHIES_FILE_NAME = "Hierarchhies.xml";
+
+
+
+
 
 }
