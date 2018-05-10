@@ -19,6 +19,7 @@ public class SpaceManagement extends AbstractManagement{
 
     public void deleteSubjectArea(String token, String spaceId, String name){
         getClient().deleteSubjectArea(token,spaceId,name);
+
     }
 
     public void executeQueryInSpace(String token, String query, String spaceId){
@@ -37,4 +38,8 @@ public class SpaceManagement extends AbstractManagement{
         getClient().clearCacheInSpace(token,spaceId);
     }
 
+    public List<UserSpace> listSpaces(String token){
+        List<UserSpace> list = getClient().listSpaces(token).getUserSpace();
+        return list;
+    }
 }

@@ -14,6 +14,10 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class RunClient {
 
@@ -22,10 +26,16 @@ public class RunClient {
 
       //  test();
        // init();
-        System.out.printf(String.valueOf(Boolean.valueOf(null)));
 
     }
 
+    public interface  Counter{
+
+       void accept(String t);
+
+
+
+    }
     public static void init(){
 
         BirstProperties bp = BirstProperties.getInstance();
@@ -33,6 +43,15 @@ public class RunClient {
 
     }
 
+    public static void testConnect(){
+        CommandWebService webservice = new CommandWebService();
+
+        BindingProvider bindingProvider = (BindingProvider) webservice.getCommandWebServiceSoap();
+
+        Map<String,Object> requestContext = bindingProvider.getRequestContext();
+        requestContext.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,"https://login.bws.birst.com/CommandWebService.asmx");
+        requestContext.put(BindingProvider.SESSION_MAINTAIN_PROPERTY, true);
+    }
     public static void test(){
 
         CommandWebService webservice = new CommandWebService();
@@ -40,6 +59,8 @@ public class RunClient {
         BindingProvider bindingProvider = (BindingProvider) webservice.getCommandWebServiceSoap();
 
         Map<String,Object> requestContext = bindingProvider.getRequestContext();
+
+
         /*
         Map<String, List<String>> requestHeaders = new HashMap<String, List<String>>();
         List<String> cookies = new ArrayList<String>();
@@ -57,7 +78,7 @@ public class RunClient {
 
 
         System.out.println("call!");
-        String token = webservice.getCommandWebServiceSoap().login("shelley.hu@infor.com","Hello123");
+        String token = webservice.getCommandWebServiceSoap().login("shelley.hu@infor.com","");
 
         System.out.println(token);
         String spaceId = "e93f6408-a7bb-4c54-81bd-6826521d30e4";
@@ -98,7 +119,6 @@ public class RunClient {
         Collections.synchronizedMap(new HashMap<>()) ;
 
     }
-
 
 
 }
