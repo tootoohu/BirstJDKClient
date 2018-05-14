@@ -126,19 +126,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AddOpenID }
-     * 
-     */
-    public AddOpenID createAddOpenID() {
-        return new AddOpenID();
-    }
-
-    /**
      * Create an instance of {@link ImportCubeMetaDataIntoSpace }
      * 
      */
     public ImportCubeMetaDataIntoSpace createImportCubeMetaDataIntoSpace() {
         return new ImportCubeMetaDataIntoSpace();
+    }
+
+    /**
+     * Create an instance of {@link AddOpenID }
+     * 
+     */
+    public AddOpenID createAddOpenID() {
+        return new AddOpenID();
     }
 
     /**
@@ -219,6 +219,22 @@ public class ObjectFactory {
      */
     public UploadData createUploadData() {
         return new UploadData();
+    }
+
+    /**
+     * Create an instance of {@link GetAgentHealth }
+     * 
+     */
+    public GetAgentHealth createGetAgentHealth() {
+        return new GetAgentHealth();
+    }
+
+    /**
+     * Create an instance of {@link CopyAccountSettings }
+     * 
+     */
+    public CopyAccountSettings createCopyAccountSettings() {
+        return new CopyAccountSettings();
     }
 
     /**
@@ -323,6 +339,14 @@ public class ObjectFactory {
      */
     public CopyCustomSubjectArea createCopyCustomSubjectArea() {
         return new CopyCustomSubjectArea();
+    }
+
+    /**
+     * Create an instance of {@link DeleteBirstConnectAgent }
+     * 
+     */
+    public DeleteBirstConnectAgent createDeleteBirstConnectAgent() {
+        return new DeleteBirstConnectAgent();
     }
 
     /**
@@ -598,6 +622,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ListCloudConnections }
+     * 
+     */
+    public ListCloudConnections createListCloudConnections() {
+        return new ListCloudConnections();
+    }
+
+    /**
      * Create an instance of {@link ResetPasswordResponse }
      * 
      */
@@ -651,6 +683,14 @@ public class ObjectFactory {
      */
     public ExportReportToPDFResponse createExportReportToPDFResponse() {
         return new ExportReportToPDFResponse();
+    }
+
+    /**
+     * Create an instance of {@link AddMask }
+     * 
+     */
+    public AddMask createAddMask() {
+        return new AddMask();
     }
 
     /**
@@ -726,6 +766,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AddMaskResponse }
+     * 
+     */
+    public AddMaskResponse createAddMaskResponse() {
+        return new AddMaskResponse();
+    }
+
+    /**
      * Create an instance of {@link GetSubjectAreaContent }
      * 
      */
@@ -790,6 +838,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link SetUpRealTimeConnectionForSpace }
+     * 
+     */
+    public SetUpRealTimeConnectionForSpace createSetUpRealTimeConnectionForSpace() {
+        return new SetUpRealTimeConnectionForSpace();
+    }
+
+    /**
      * Create an instance of {@link ExportReportToCSVResponse }
      * 
      */
@@ -798,11 +854,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SetUpRealTimeConnectionForSpace }
+     * Create an instance of {@link CopyAccountSettingsResponse }
      * 
      */
-    public SetUpRealTimeConnectionForSpace createSetUpRealTimeConnectionForSpace() {
-        return new SetUpRealTimeConnectionForSpace();
+    public CopyAccountSettingsResponse createCopyAccountSettingsResponse() {
+        return new CopyAccountSettingsResponse();
+    }
+
+    /**
+     * Create an instance of {@link DeleteBirstConnectAgentResponse }
+     * 
+     */
+    public DeleteBirstConnectAgentResponse createDeleteBirstConnectAgentResponse() {
+        return new DeleteBirstConnectAgentResponse();
     }
 
     /**
@@ -899,6 +963,14 @@ public class ObjectFactory {
      */
     public SetLanguageForUser createSetLanguageForUser() {
         return new SetLanguageForUser();
+    }
+
+    /**
+     * Create an instance of {@link UpgradeAgent }
+     * 
+     */
+    public UpgradeAgent createUpgradeAgent() {
+        return new UpgradeAgent();
     }
 
     /**
@@ -1086,6 +1158,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link CopyWorkflow }
+     * 
+     */
+    public CopyWorkflow createCopyWorkflow() {
+        return new CopyWorkflow();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfSpaceIdMapping }
+     * 
+     */
+    public ArrayOfSpaceIdMapping createArrayOfSpaceIdMapping() {
+        return new ArrayOfSpaceIdMapping();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfUserIdMapping }
+     * 
+     */
+    public ArrayOfUserIdMapping createArrayOfUserIdMapping() {
+        return new ArrayOfUserIdMapping();
+    }
+
+    /**
      * Create an instance of {@link IsPublishingComplete }
      * 
      */
@@ -1203,6 +1299,14 @@ public class ObjectFactory {
      */
     public RemoveAllowedIpResponse createRemoveAllowedIpResponse() {
         return new RemoveAllowedIpResponse();
+    }
+
+    /**
+     * Create an instance of {@link DeleteCloudConnectionResponse }
+     * 
+     */
+    public DeleteCloudConnectionResponse createDeleteCloudConnectionResponse() {
+        return new DeleteCloudConnectionResponse();
     }
 
     /**
@@ -1342,6 +1446,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link UpdateCloudConnectionResponse }
+     * 
+     */
+    public UpdateCloudConnectionResponse createUpdateCloudConnectionResponse() {
+        return new UpdateCloudConnectionResponse();
+    }
+
+    /**
      * Create an instance of {@link EnableUserResponse }
      * 
      */
@@ -1411,6 +1523,22 @@ public class ObjectFactory {
      */
     public RenameFileOrDirectory createRenameFileOrDirectory() {
         return new RenameFileOrDirectory();
+    }
+
+    /**
+     * Create an instance of {@link AddCloudConnection }
+     * 
+     */
+    public AddCloudConnection createAddCloudConnection() {
+        return new AddCloudConnection();
+    }
+
+    /**
+     * Create an instance of {@link CloudCon }
+     * 
+     */
+    public CloudCon createCloudCon() {
+        return new CloudCon();
     }
 
     /**
@@ -1550,6 +1678,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link UpgradeAgentResponse }
+     * 
+     */
+    public UpgradeAgentResponse createUpgradeAgentResponse() {
+        return new UpgradeAgentResponse();
+    }
+
+    /**
      * Create an instance of {@link ListUsersInSpaceResponse }
      * 
      */
@@ -1571,6 +1707,22 @@ public class ObjectFactory {
      */
     public UnlinkProfileFromAccount createUnlinkProfileFromAccount() {
         return new UnlinkProfileFromAccount();
+    }
+
+    /**
+     * Create an instance of {@link SetAgentsToConnectionMapping }
+     * 
+     */
+    public SetAgentsToConnectionMapping createSetAgentsToConnectionMapping() {
+        return new SetAgentsToConnectionMapping();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfConnectionAgentsMapping }
+     * 
+     */
+    public ArrayOfConnectionAgentsMapping createArrayOfConnectionAgentsMapping() {
+        return new ArrayOfConnectionAgentsMapping();
     }
 
     /**
@@ -1779,6 +1931,14 @@ public class ObjectFactory {
      */
     public SetSpaceProcessEngineVersion createSetSpaceProcessEngineVersion() {
         return new SetSpaceProcessEngineVersion();
+    }
+
+    /**
+     * Create an instance of {@link UpdateCloudConnection }
+     * 
+     */
+    public UpdateCloudConnection createUpdateCloudConnection() {
+        return new UpdateCloudConnection();
     }
 
     /**
@@ -1998,19 +2158,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link DeleteLastDataFromSpaceResponse }
-     * 
-     */
-    public DeleteLastDataFromSpaceResponse createDeleteLastDataFromSpaceResponse() {
-        return new DeleteLastDataFromSpaceResponse();
-    }
-
-    /**
      * Create an instance of {@link GenerateBirstConnectTokenResponse }
      * 
      */
     public GenerateBirstConnectTokenResponse createGenerateBirstConnectTokenResponse() {
         return new GenerateBirstConnectTokenResponse();
+    }
+
+    /**
+     * Create an instance of {@link DeleteLastDataFromSpaceResponse }
+     * 
+     */
+    public DeleteLastDataFromSpaceResponse createDeleteLastDataFromSpaceResponse() {
+        return new DeleteLastDataFromSpaceResponse();
     }
 
     /**
@@ -2251,6 +2411,22 @@ public class ObjectFactory {
      */
     public GetDataUploadStatusResponse createGetDataUploadStatusResponse() {
         return new GetDataUploadStatusResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListCloudConnectionsResponse }
+     * 
+     */
+    public ListCloudConnectionsResponse createListCloudConnectionsResponse() {
+        return new ListCloudConnectionsResponse();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfCloudCon }
+     * 
+     */
+    public ArrayOfCloudCon createArrayOfCloudCon() {
+        return new ArrayOfCloudCon();
     }
 
     /**
@@ -2518,11 +2694,35 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link MapAgentsToConnections }
+     * 
+     */
+    public MapAgentsToConnections createMapAgentsToConnections() {
+        return new MapAgentsToConnections();
+    }
+
+    /**
      * Create an instance of {@link GetAllHierarchies }
      * 
      */
     public GetAllHierarchies createGetAllHierarchies() {
         return new GetAllHierarchies();
+    }
+
+    /**
+     * Create an instance of {@link MapAgentsToConnectionsResponse }
+     * 
+     */
+    public MapAgentsToConnectionsResponse createMapAgentsToConnectionsResponse() {
+        return new MapAgentsToConnectionsResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdateBirstConnectAgentResponse }
+     * 
+     */
+    public UpdateBirstConnectAgentResponse createUpdateBirstConnectAgentResponse() {
+        return new UpdateBirstConnectAgentResponse();
     }
 
     /**
@@ -2539,6 +2739,14 @@ public class ObjectFactory {
      */
     public GetProfilePropertyWithLocaleResponse createGetProfilePropertyWithLocaleResponse() {
         return new GetProfilePropertyWithLocaleResponse();
+    }
+
+    /**
+     * Create an instance of {@link SetUpGenericJDBCRealTimeConnectionForSpaceResponse }
+     * 
+     */
+    public SetUpGenericJDBCRealTimeConnectionForSpaceResponse createSetUpGenericJDBCRealTimeConnectionForSpaceResponse() {
+        return new SetUpGenericJDBCRealTimeConnectionForSpaceResponse();
     }
 
     /**
@@ -2563,14 +2771,6 @@ public class ObjectFactory {
      */
     public ListEmailDomains createListEmailDomains() {
         return new ListEmailDomains();
-    }
-
-    /**
-     * Create an instance of {@link SetUpGenericJDBCRealTimeConnectionForSpaceResponse }
-     * 
-     */
-    public SetUpGenericJDBCRealTimeConnectionForSpaceResponse createSetUpGenericJDBCRealTimeConnectionForSpaceResponse() {
-        return new SetUpGenericJDBCRealTimeConnectionForSpaceResponse();
     }
 
     /**
@@ -2651,6 +2851,22 @@ public class ObjectFactory {
      */
     public CreateNewSpaceUsingSchemaResponse createCreateNewSpaceUsingSchemaResponse() {
         return new CreateNewSpaceUsingSchemaResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetAgentHealthResponse }
+     * 
+     */
+    public GetAgentHealthResponse createGetAgentHealthResponse() {
+        return new GetAgentHealthResponse();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfAgentStatus }
+     * 
+     */
+    public ArrayOfAgentStatus createArrayOfAgentStatus() {
+        return new ArrayOfAgentStatus();
     }
 
     /**
@@ -2886,6 +3102,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AddCloudConnectionResponse }
+     * 
+     */
+    public AddCloudConnectionResponse createAddCloudConnectionResponse() {
+        return new AddCloudConnectionResponse();
+    }
+
+    /**
      * Create an instance of {@link LinkProfileToAccount }
      * 
      */
@@ -2931,6 +3155,22 @@ public class ObjectFactory {
      */
     public AddAllowedIPAddrForAccount createAddAllowedIPAddrForAccount() {
         return new AddAllowedIPAddrForAccount();
+    }
+
+    /**
+     * Create an instance of {@link SetAgentsToConnectionMappingResponse }
+     * 
+     */
+    public SetAgentsToConnectionMappingResponse createSetAgentsToConnectionMappingResponse() {
+        return new SetAgentsToConnectionMappingResponse();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfConnectionAgentsMappingResult }
+     * 
+     */
+    public ArrayOfConnectionAgentsMappingResult createArrayOfConnectionAgentsMappingResult() {
+        return new ArrayOfConnectionAgentsMappingResult();
     }
 
     /**
@@ -3190,6 +3430,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DeleteCloudConnection }
+     * 
+     */
+    public DeleteCloudConnection createDeleteCloudConnection() {
+        return new DeleteCloudConnection();
+    }
+
+    /**
      * Create an instance of {@link SetSubjectAreaPermissions }
      * 
      */
@@ -3203,6 +3451,14 @@ public class ObjectFactory {
      */
     public RenameDashboardResponse createRenameDashboardResponse() {
         return new RenameDashboardResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdateBirstConnectAgent }
+     * 
+     */
+    public UpdateBirstConnectAgent createUpdateBirstConnectAgent() {
+        return new UpdateBirstConnectAgent();
     }
 
     /**
@@ -3251,6 +3507,14 @@ public class ObjectFactory {
      */
     public GetLiveAccessColumnPropertiesResponse createGetLiveAccessColumnPropertiesResponse() {
         return new GetLiveAccessColumnPropertiesResponse();
+    }
+
+    /**
+     * Create an instance of {@link RepointPackages }
+     * 
+     */
+    public RepointPackages createRepointPackages() {
+        return new RepointPackages();
     }
 
     /**
@@ -3374,6 +3638,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link CopyWorkflowResponse }
+     * 
+     */
+    public CopyWorkflowResponse createCopyWorkflowResponse() {
+        return new CopyWorkflowResponse();
+    }
+
+    /**
      * Create an instance of {@link PublishDataResponse }
      * 
      */
@@ -3395,6 +3667,14 @@ public class ObjectFactory {
      */
     public SetSpaceSSOPassword createSetSpaceSSOPassword() {
         return new SetSpaceSSOPassword();
+    }
+
+    /**
+     * Create an instance of {@link RepointPackagesResponse }
+     * 
+     */
+    public RepointPackagesResponse createRepointPackagesResponse() {
+        return new RepointPackagesResponse();
     }
 
     /**
@@ -3518,6 +3798,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AgentStatus }
+     * 
+     */
+    public AgentStatus createAgentStatus() {
+        return new AgentStatus();
+    }
+
+    /**
+     * Create an instance of {@link UserIdMapping }
+     * 
+     */
+    public UserIdMapping createUserIdMapping() {
+        return new UserIdMapping();
+    }
+
+    /**
      * Create an instance of {@link Language }
      * 
      */
@@ -3558,11 +3854,43 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ConnectionProperty }
+     * 
+     */
+    public ConnectionProperty createConnectionProperty() {
+        return new ConnectionProperty();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfConnectionProperty }
+     * 
+     */
+    public ArrayOfConnectionProperty createArrayOfConnectionProperty() {
+        return new ArrayOfConnectionProperty();
+    }
+
+    /**
+     * Create an instance of {@link ConnectionAgentsMappingResult }
+     * 
+     */
+    public ConnectionAgentsMappingResult createConnectionAgentsMappingResult() {
+        return new ConnectionAgentsMappingResult();
+    }
+
+    /**
      * Create an instance of {@link QueryOptionOfStringString }
      * 
      */
     public QueryOptionOfStringString createQueryOptionOfStringString() {
         return new QueryOptionOfStringString();
+    }
+
+    /**
+     * Create an instance of {@link ConnectionAgentsMapping }
+     * 
+     */
+    public ConnectionAgentsMapping createConnectionAgentsMapping() {
+        return new ConnectionAgentsMapping();
     }
 
     /**
@@ -3603,6 +3931,14 @@ public class ObjectFactory {
      */
     public ArrayOfInt createArrayOfInt() {
         return new ArrayOfInt();
+    }
+
+    /**
+     * Create an instance of {@link SpaceIdMapping }
+     * 
+     */
+    public SpaceIdMapping createSpaceIdMapping() {
+        return new SpaceIdMapping();
     }
 
 }

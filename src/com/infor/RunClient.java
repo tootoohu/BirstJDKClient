@@ -4,8 +4,6 @@ import com.birst.*;
 import com.infor.model.webservice.BirstProperties;
 import com.infor.util.XMLReader;
 import org.xml.sax.SAXException;
-
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.ws.BindingProvider;
@@ -26,7 +24,7 @@ public class RunClient {
 
       //  test();
        // init();
-
+        testConnect();
     }
 
     public interface  Counter{
@@ -51,6 +49,12 @@ public class RunClient {
         Map<String,Object> requestContext = bindingProvider.getRequestContext();
         requestContext.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,"https://login.bws.birst.com/CommandWebService.asmx");
         requestContext.put(BindingProvider.SESSION_MAINTAIN_PROPERTY, true);
+
+        String token = webservice.getCommandWebServiceSoap().login("shelley.hu@infor.com","Forwork123");
+        System.out.println(token);
+        String jnlp = webservice.getCommandWebServiceSoap().getSpaceJNLPFile(token,"57baa258-f10c-44c2-9d19-3aa4ec89da6f","dcconfig.xml");
+        System.out.println(jnlp);
+
     }
     public static void test(){
 

@@ -29,6 +29,16 @@ public class DataSourceContainer {
 
     private  Map<String, HierarchyMetadata> birstXmlHierarchyMap;
 
+    private Map<String, String> spaceMap;
+
+    public Map<String, String> getSpaceMap() {
+        return spaceMap;
+    }
+
+    public void setSpaceMap(Map<String, String> spaceMap) {
+        this.spaceMap = spaceMap;
+    }
+
     public static DataSourceContainer getContainer() {
         return container;
     }

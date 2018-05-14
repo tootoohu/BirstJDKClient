@@ -22,7 +22,6 @@ public class BirstProperties {
 
     private final static String SOURCE_SPACE_NAME = "birst.source.spaceName";
 
-
     private String loginToken;
 
     public synchronized static BirstProperties getInstance(){

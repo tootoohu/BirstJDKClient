@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="token" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="spaceFromID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="packageID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="packageName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="spaceToID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "token",
     "spaceFromID",
-    "packageID",
+    "packageName",
     "spaceToID"
 })
 @XmlRootElement(name = "importPackage")
@@ -41,7 +41,7 @@ public class ImportPackage {
 
     protected String token;
     protected String spaceFromID;
-    protected String packageID;
+    protected String packageName;
     protected String spaceToID;
 
     /**
@@ -93,27 +93,27 @@ public class ImportPackage {
     }
 
     /**
-     * Gets the value of the packageID property.
+     * Gets the value of the packageName property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getPackageID() {
-        return packageID;
+    public String getPackageName() {
+        return packageName;
     }
 
     /**
-     * Sets the value of the packageID property.
+     * Sets the value of the packageName property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setPackageID(String value) {
-        this.packageID = value;
+    public void setPackageName(String value) {
+        this.packageName = value;
     }
 
     /**

@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="token" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="userId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="restricted" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,7 +34,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "token",
     "name",
-    "description"
+    "description",
+    "userId",
+    "restricted"
 })
 @XmlRootElement(name = "registerBirstConnectAgent")
 public class RegisterBirstConnectAgent {
@@ -40,6 +44,8 @@ public class RegisterBirstConnectAgent {
     protected String token;
     protected String name;
     protected String description;
+    protected String userId;
+    protected boolean restricted;
 
     /**
      * Gets the value of the token property.
@@ -111,6 +117,46 @@ public class RegisterBirstConnectAgent {
      */
     public void setDescription(String value) {
         this.description = value;
+    }
+
+    /**
+     * Gets the value of the userId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getUserId() {
+        return userId;
+    }
+
+    /**
+     * Sets the value of the userId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setUserId(String value) {
+        this.userId = value;
+    }
+
+    /**
+     * Gets the value of the restricted property.
+     * 
+     */
+    public boolean isRestricted() {
+        return restricted;
+    }
+
+    /**
+     * Sets the value of the restricted property.
+     * 
+     */
+    public void setRestricted(boolean value) {
+        this.restricted = value;
     }
 
 }

@@ -100,7 +100,7 @@ public class BirstSourcesTabGenerator<T> implements XmlInterface{
         Button updatebtn = new Button("Update");
         updatebtn.setPrefSize(110,30);
         updatebtn.setLayoutX(10);
-        buttonMenuPane.getChildren().addAll(loadComboxForSpaces(),updatebtn);
+        buttonMenuPane.getChildren().addAll(updatebtn);
 
         updatebtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -138,22 +138,10 @@ public class BirstSourcesTabGenerator<T> implements XmlInterface{
 
         SplitPane sp = new SplitPane();
         sp.getItems().addAll(treePane,rightPane);
-        sp.setDividerPositions(0.3f, 0.7f);
+        sp.setDividerPositions(0.2f, 0.8f);
         sourcesTab.setContent(sp);
 
         return sourcesTab;
-    }
-
-    private ComboBox loadComboxForSpaces(){
-        List<UserSpace> spaces = spaceManagement.listSpaces(birstProperties.getLoginToken());
-
-        List<String> names = spaces.stream().map(  e ->{ return e.getName();}).collect(Collectors.toList());
-        ObservableList<String> options = FXCollections.observableArrayList(names);
-        final ComboBox comboBox = new ComboBox(options);
-        List<? super HashMap> map;
-        map = new ArrayList<Object>();
-
-        return comboBox;
     }
 
     private void addNewTreeNode(){

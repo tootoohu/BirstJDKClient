@@ -19,7 +19,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "CommandWebService", targetNamespace = "http://www.birst.com/", wsdlLocation = "file:/E:/generated/commandwebservice.wsdl")
+@WebServiceClient(name = "CommandWebService", targetNamespace = "http://www.birst.com/", wsdlLocation = "file:/E:/generated/CommandWebService.wsdl")
 public class CommandWebService
     extends Service
 {
@@ -32,7 +32,7 @@ public class CommandWebService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("file:/E:/generated/commandwebservice.wsdl");
+            url = new URL("file:/E:/generated/CommandWebService.wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

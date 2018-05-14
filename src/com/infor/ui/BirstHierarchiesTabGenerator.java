@@ -69,7 +69,7 @@ public class BirstHierarchiesTabGenerator {
 
         SplitPane sp = new SplitPane();
         sp.getItems().addAll(treePane,rightPane);
-        sp.setDividerPositions(0.3f, 0.7f);
+        sp.setDividerPositions(0.2f, 0.8f);
         hierarchiesTab.setContent(sp);
 
         return hierarchiesTab;
