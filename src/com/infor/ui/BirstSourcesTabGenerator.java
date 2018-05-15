@@ -32,6 +32,7 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import javafx.util.converter.NumberStringConverter;
 import org.xml.sax.SAXException;
+import sun.reflect.generics.tree.Tree;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -66,26 +67,11 @@ public class BirstSourcesTabGenerator<T> implements XmlInterface{
 
         StackPane treePane = new StackPane();
         TreeItem rootTreeItem = new TreeItem<>("All");
-        rootTreeItem.setExpanded(true);
+
         DataSourceContainer container = BirstDataLoadManagement.loadFromFile("src/resources/Infor-CSI-Suite-10_0_0_0-Parent-Dev-Master/");
 
-        loadTreeItems(rootTreeItem, container.getBirstXmlSourceMap());
+        treePane.getChildren().add(loadTree(rootTreeItem,container.getBirstXmlSourceMap()));
 
-        TreeView treeView = new TreeView(rootTreeItem);
-        treePane.getChildren().add(treeView);
-        final ContextMenu contextMenu = new ContextMenu();
-        MenuItem addMenu = new MenuItem("Add");
-        addMenu.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("add item");
-                TreeItem item = new TreeItem("New Item");
-                rootTreeItem.getChildren().add(item);
-            }
-        });
-
-        contextMenu.getItems().addAll(addMenu);
-        treeView.setContextMenu(contextMenu);
 
         SplitPane rightPane = new SplitPane();
         rightPane.setDividerPositions(0.05f,0.95f);
@@ -115,8 +101,6 @@ public class BirstSourcesTabGenerator<T> implements XmlInterface{
         });
 
         Tab columnsTab = new Tab();
-
-
         loadColumnTableView(columnTableView);
         columnsTab.setText("Columns");
         columnsTab.setContent(columnTableView);
@@ -127,13 +111,6 @@ public class BirstSourcesTabGenerator<T> implements XmlInterface{
         tabPane.getTabs().add(loadScriptTab());
 
         rightPane.getItems().addAll(buttonMenuPane, tabPane);
-
-        treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            TreeItem treeItem = (TreeItem) newValue;
-            refreshTableData(container.getBirstXmlSourceMap(),treeItem, columnTableView);
-         //   refreshScript(treeItem,container.getBirstXmlSourceMap(),input, script);
-        });
-
         columnTableView.setEditable(true);
 
         SplitPane sp = new SplitPane();
@@ -183,10 +160,55 @@ public class BirstSourcesTabGenerator<T> implements XmlInterface{
         return scriptTab;
     }
 
+    private TreeView loadTree(TreeItem treeItem, Map<String, StagingTableSubClass> map){
+        loadTreeItems(treeItem,map);
+        treeItem.setExpanded(true);
+        TreeView treeView = new TreeView(treeItem);
+        final ContextMenu contextMenu = new ContextMenu();
+        MenuItem addMenu = new MenuItem("Add");
+        addMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("add item");
+                TreeItem item = new TreeItem("New Item");
+                treeItem.getChildren().add(item);
+            }
+        });
+
+        MenuItem deleteMenu = new MenuItem("Delete");
+        deleteMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                TreeItem c = (TreeItem)treeView.getSelectionModel().getSelectedItem();
+                boolean remove = c.getParent().getChildren().remove(c);
+                System.out.println("Remove");
+
+            }
+        });
+
+        contextMenu.getItems().addAll(addMenu, deleteMenu);
+        treeView.setContextMenu(contextMenu);
+
+        treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            TreeItem item = (TreeItem) newValue;
+            refreshTableData(map,item, columnTableView);
+            //   refreshScript(treeItem,container.getBirstXmlSourceMap(),input, script);
+        });
+
+        treeView.setEditable(true);
+        treeView.setCellFactory(new Callback<TreeView<String>,TreeCell<String>>(){
+            @Override
+            public TreeCell<String> call(TreeView<String> p) {
+                return new TextFieldTreeCellImpl();
+            }
+        });
+
+        return treeView;
+    }
     private void loadTreeItems(TreeItem treeItem, Map<String, StagingTableSubClass> sourcemap){
         for(String key: sourcemap.keySet()){
             TreeItem item = new TreeItem(key);
-            ReentrantLock lock;
+
             treeItem.getChildren().add(item);
         }
     }
@@ -201,7 +223,6 @@ public class BirstSourcesTabGenerator<T> implements XmlInterface{
             }else {
                 table.setItems(FXCollections.observableArrayList());
             }
-
         }
     }
 

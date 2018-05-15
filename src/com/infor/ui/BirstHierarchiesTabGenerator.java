@@ -6,11 +6,14 @@ import com.infor.admin.BirstDataLoadManagement;
 import com.infor.util.BirstXmlReader;
 import com.infor.util.DataSourceContainer;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,28 +28,29 @@ public class BirstHierarchiesTabGenerator {
 
     private String currentNode;
 
+    TreeItem rootTreeItem = new TreeItem<>("All");
+
     public BirstHierarchiesTabGenerator() throws ParserConfigurationException, SAXException, TransformerConfigurationException, IOException {
     }
 
     public Tab loadTab(){
         Tab hierarchiesTab = new Tab();
         hierarchiesTab.setText("Hierarchies");
-
         //
         StackPane treePane = new StackPane();
-        TreeItem rootTreeItem = new TreeItem<>("All");
+
         rootTreeItem.setExpanded(true);
         DataSourceContainer container = BirstDataLoadManagement.loadFromFile("src/resources/Infor-CSI-Suite-10_0_0_0-Parent-Dev-Master/");
 
-        loadTreeItems(rootTreeItem, container.getBirstXmlHierarchyMap());
-        TreeView treeView = new TreeView(rootTreeItem);
-        treePane.getChildren().add(treeView);
-
         TreeItem levelTreeItem = new TreeItem<>();
-        treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            TreeItem treeItem = (TreeItem) newValue;
-            refreshLevelTree(treeItem,container.getBirstXmlHierarchyMap(),levelTreeItem);
-        });
+       // loadTreeItems(rootTreeItem, container.getBirstXmlHierarchyMap());
+     //   TreeView treeView = new TreeView(rootTreeItem);
+        treePane.getChildren().add(loadTree(rootTreeItem,container.getBirstXmlHierarchyMap(),levelTreeItem));
+
+//        treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+//            TreeItem treeItem = (TreeItem) newValue;
+//            refreshLevelTree(treeItem,container.getBirstXmlHierarchyMap(),levelTreeItem);
+//        });
 
         TreeView leveltreeView = new TreeView(levelTreeItem);
 
@@ -76,6 +80,48 @@ public class BirstHierarchiesTabGenerator {
     }
 
 
+    private TreeView loadTree(TreeItem treeItem, Map<String, HierarchyMetadata> hmap, TreeItem levelTreeItem){
+        TreeView treeView = new TreeView(treeItem);
+        loadTreeItems(treeItem, hmap);
+        treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            TreeItem item = (TreeItem) newValue;
+            refreshLevelTree(item, hmap,levelTreeItem);
+        });
+
+        treeView.setEditable(true);
+        treeView.setCellFactory(new Callback<TreeView<String>,TreeCell<String>>(){
+            @Override
+            public TreeCell<String> call(TreeView<String> p) {
+                return new TextFieldTreeCellImpl();
+            }
+        });
+
+        final ContextMenu contextMenu = new ContextMenu();
+        MenuItem addMenu = new MenuItem("Add");
+        addMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("add item");
+                TreeItem item = new TreeItem("New Item");
+                treeItem.getChildren().add(item);
+            }
+        });
+
+        MenuItem deleteMenu = new MenuItem("Delete");
+        deleteMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                TreeItem c = (TreeItem)treeView.getSelectionModel().getSelectedItem();
+                boolean remove = c.getParent().getChildren().remove(c);
+                System.out.println("Remove");
+
+            }
+        });
+
+        contextMenu.getItems().addAll(addMenu, deleteMenu);
+        treeView.setContextMenu(contextMenu);
+        return treeView;
+    }
 
     private void loadTreeItems(TreeItem treeItem, Map<String, HierarchyMetadata> hmap){
         for(String key: hmap.keySet()){

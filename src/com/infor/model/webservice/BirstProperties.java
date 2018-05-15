@@ -1,5 +1,7 @@
 package com.infor.model.webservice;
 
+import com.birst.UserSpace;
+
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Properties;
@@ -24,13 +26,23 @@ public class BirstProperties {
 
     private String loginToken;
 
+    private UserSpace currentSpace;
+
+    public UserSpace getCurrentSpace() {
+        return currentSpace;
+    }
+
+    public void setCurrentSpace(UserSpace currentSpace) {
+        this.currentSpace = currentSpace;
+    }
+
     public synchronized static BirstProperties getInstance(){
        if(birstProperties == null){
-           try {
-               properties.load(BirstProperties.class.getResourceAsStream(PROPERTY_FILE));
-           } catch (IOException e) {
-               e.printStackTrace();
-           }
+//           try {
+//               properties.load(BirstProperties.class.getResourceAsStream(PROPERTY_FILE));
+//           } catch (IOException e) {
+//               e.printStackTrace();
+//           }
            birstProperties = new BirstProperties();
        }
        return birstProperties;
@@ -63,7 +75,7 @@ public class BirstProperties {
 
     public String getSourceSpaceId(){ return  properties.getProperty(SOURCE_SPACE_KEY);}
 
-    public void setLoginToken(String loginToken) {
+    public void setLoginToken(String  loginToken) {
         this.loginToken = loginToken;
     }
 
@@ -79,6 +91,5 @@ public class BirstProperties {
         }
        return loginToken;
     }
-
 
 }

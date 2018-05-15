@@ -34,18 +34,23 @@ public class DatabaseQuery {
     public static final String REDSHIFT = "Redshift";
     public static final String HANA = "SAP Hana";
 
-    public boolean genericDriver;
-    public String driverName;
-    public String serverName;
+
+    private String serverName;
     private String databaseName;
     private String username;
     private String password;
     private int port;
     private String databaseType;
-    private String schema;
-    private String connectString;
-    private int timeout = -1;
     private String query;
+    private String queryName;
+
+    public String getQueryName() {
+        return queryName;
+    }
+
+    public void setQueryName(String queryName) {
+        this.queryName = queryName;
+    }
 
     public String getQuery() {
         return query;
@@ -53,14 +58,6 @@ public class DatabaseQuery {
 
     public void setQuery(String query) {
         this.query = query;
-    }
-
-    public String getDriverName() {
-        return driverName;
-    }
-
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
     }
 
     public String getServerName() {
@@ -111,42 +108,5 @@ public class DatabaseQuery {
         this.databaseType = databaseType;
     }
 
-    public String getSchema() {
-        return schema;
-    }
 
-    public void setSchema(String schema) {
-        this.schema = schema;
-    }
-
-    public String getConnectString() {
-        return connectString;
-    }
-
-    public void setConnectString(String connectString) {
-        this.connectString = connectString;
-    }
-
-    public int getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
-    }
-
-    public String getXML() {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            BufferedOutputStream os = new BufferedOutputStream(baos);
-            XMLEncoder xml = new XMLEncoder(os);
-            xml.writeObject(this);
-            xml.flush();
-            baos.close();
-            return baos.toString();
-        } catch (IOException var4) {
-            Logger.getLogger(this.getClass()).error((Object)null, var4);
-            return null;
-        }
-    }
 }

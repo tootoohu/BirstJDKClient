@@ -1,7 +1,9 @@
 package com.infor.ui;
 
 import com.infor.connect.DatabaseQuery;
+import com.infor.connect.DatabaseQueryWrapper;
 import com.infor.model.webservice.BirstProperties;
+import com.infor.util.DatabaseQueryXmlHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,37 +11,44 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
 
-import java.util.concurrent.Callable;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class BirstConnectTabGenerator implements TabGeneratorInterface{
 
     private static BirstProperties birstProperties = BirstProperties.getInstance();
 
-    private TreeItem rootTreeItem = new TreeItem<>("All");
+    private TreeItem<DatabaseQuery> rootTreeItem;
+
+    private List<DatabaseQuery> tasks;
+    TreeView<DatabaseQuery> treeView;
+    private DatabaseQuery currentQuery = new DatabaseQuery();
+    private TextArea queryArea;
+
+    private TextField queryNameField;
+    private ComboBox typeBox;
+    private TextField serverField;
+    private TextField portField;
+    private TextField dbNameField;
+    private TextField userNameField;
+    private PasswordField pwdField;
+
+
+    private static final String DATA_SOURCE_FILE = "DataSource.xml";
 
     public Tab loadTab(){
         Tab connectTab = new Tab("Data Source");
         StackPane treePane = new StackPane();
         TreeView treeView = loadTree();
         treePane.getChildren().add(treeView);
-
-        //
-        final ContextMenu contextMenu = new ContextMenu();
-        MenuItem addMenu = new MenuItem("Add");
-        addMenu.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-                TreeItem item = new TreeItem("New Item");
-                rootTreeItem.getChildren().add(item);
-            }
-        });
-
-        contextMenu.getItems().addAll(addMenu);
-        treeView.setContextMenu(contextMenu);
 
         SplitPane rightPane = new SplitPane();
         rightPane.setDividerPositions(0.05f,0.95f);
@@ -56,11 +65,81 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
     }
 
     private TreeView loadTree(){
-        TreeView treeView = new TreeView(rootTreeItem);
+        DatabaseQuery allQuery = new DatabaseQuery();
+        allQuery.setQueryName("All");
+        rootTreeItem = new TreeItem<>(allQuery);
+        treeView = new TreeView(rootTreeItem);
+        treeView.setEditable(true);
+        treeView.setCellFactory(new Callback<TreeView<DatabaseQuery>,TreeCell<DatabaseQuery>>(){
+            @Override
+            public TreeCell<DatabaseQuery> call(TreeView<DatabaseQuery> p) {
+                return new DatabaseQueryTreeCellImple();
+            }
+        });
+
+        treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            TreeItem item = (TreeItem) newValue;
+            refreshQueryPane(item);
+
+        });
+
         rootTreeItem.setExpanded(true);
-        System.out.println();
+        String path = "resources/" + birstProperties.getCurrentSpace().getName() + "/" + DATA_SOURCE_FILE;
+        System.out.println(" data source file " + path);
+
+        tasks = DatabaseQueryXmlHelper.loadDataFromFile(path);
+
+        if(tasks != null){
+            for (DatabaseQuery query: tasks) {
+                TreeItem<DatabaseQuery> treeItem = new TreeItem<>(query);
+                rootTreeItem.getChildren().add(treeItem);
+            }
+        }
+
+        final ContextMenu contextMenu = new ContextMenu();
+        MenuItem addMenu = new MenuItem("Add");
+        addMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                DatabaseQuery databaseQuery = new DatabaseQuery();
+                databaseQuery.setQueryName("New Query");
+                TreeItem item = new TreeItem(databaseQuery);
+                rootTreeItem.getChildren().add(item);
+            }
+        });
+
+        MenuItem deleteMenu = new MenuItem("Delete");
+        deleteMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                TreeItem c = (TreeItem)treeView.getSelectionModel().getSelectedItem();
+                boolean remove = c.getParent().getChildren().remove(c);
+              }
+        });
+
+        contextMenu.getItems().addAll(addMenu, deleteMenu);
+        treeView.setContextMenu(contextMenu);
         return treeView;
     }
+
+    private void refreshQueryPane(TreeItem item){
+        currentQuery = treeView.getSelectionModel().getSelectedItem().getValue();
+        if(currentQuery == null){
+            currentQuery = new DatabaseQuery();
+            tasks.add(currentQuery);
+        }
+
+        DatabaseQuery databaseQuery = (DatabaseQuery) item.getValue();
+        queryNameField.setText(databaseQuery.getQueryName());
+        typeBox.setValue(databaseQuery.getDatabaseType());
+        serverField.setText(databaseQuery.getServerName());
+        portField.setText(String.valueOf(databaseQuery.getPort()));
+        dbNameField.setText(databaseQuery.getDatabaseName());
+        userNameField.setText(databaseQuery.getUsername());
+        pwdField.setText(databaseQuery.getPassword());
+        queryArea.setText(databaseQuery.getQuery());
+    }
+
 
     private Control loadDatasourcePane(){
         GridPane gridPane = new GridPane();
@@ -68,16 +147,15 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         gridPane.setVgap(5);
         gridPane.setPadding(new Insets(10,10,10,20));
 
-
         Label queryLable = new Label("Query Name:");
         GridPane.setConstraints(queryLable, 0,0);
 
         gridPane.getChildren().add(queryLable);
 
-        TextField queryField = new TextField();
+        queryNameField = new TextField();
       //  GridPane.setColumnSpan(queryField,2);
-        GridPane.setConstraints(queryField, 1,0);
-        gridPane.getChildren().add(queryField);
+        GridPane.setConstraints(queryNameField, 1,0);
+        gridPane.getChildren().add(queryNameField);
 
         Label typeLable = new Label("Database Type:");
         GridPane.setConstraints(typeLable, 2,0);
@@ -85,7 +163,7 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
 
         ObservableList<String> options = FXCollections.observableArrayList(
                 DatabaseQuery.MSSQL, DatabaseQuery.ORACLE, DatabaseQuery.MYSQL);
-        ComboBox typeBox = new ComboBox(options);
+        typeBox = new ComboBox(options);
         GridPane.setConstraints(typeBox, 3,0);
         gridPane.getChildren().add(typeBox);
 
@@ -98,7 +176,7 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         GridPane.setConstraints(serverLable, 0,1);
         gridPane.getChildren().add(serverLable);
 
-        TextField serverField = new TextField();
+        serverField = new TextField();
         GridPane.setConstraints(serverField, 1,1);
         gridPane.getChildren().add(serverField);
 
@@ -107,7 +185,7 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
 
         gridPane.getChildren().add(portLable);
 
-        TextField portField = new TextField();
+        portField = new TextField();
         GridPane.setColumnSpan(portField,1);
         GridPane.setConstraints(portField, 3,1);
         gridPane.getChildren().add(portField);
@@ -121,7 +199,7 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         GridPane.setConstraints(dbNameLable, 0,2);
         gridPane.getChildren().add(dbNameLable);
 
-        TextField dbNameField = new TextField();
+        dbNameField = new TextField();
         GridPane.setConstraints(dbNameField, 1,2);
         gridPane.getChildren().add(dbNameField);
 
@@ -129,7 +207,7 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         GridPane.setConstraints(userNameLable, 2,2);
         gridPane.getChildren().add(userNameLable);
 
-        TextField userNameField = new TextField();
+        userNameField = new TextField();
         GridPane.setConstraints(userNameField, 3,2);
         gridPane.getChildren().add(userNameField);
 
@@ -137,7 +215,7 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         GridPane.setConstraints(pwdLable, 0,3);
         gridPane.getChildren().add(pwdLable);
 
-        TextField pwdField = new TextField();
+        pwdField = new PasswordField();
         GridPane.setConstraints(pwdField, 1,3);
         gridPane.getChildren().add(pwdField);
 
@@ -148,6 +226,24 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         TextField replaceField = new TextField();
         GridPane.setConstraints(replaceField, 3,3);
         gridPane.getChildren().add(replaceField);
+
+        saveBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                currentQuery.setServerName(serverField.getText());
+                currentQuery.setQueryName(queryNameField.getText());
+                currentQuery.setDatabaseType(typeBox.getValue().toString());
+                currentQuery.setPort(Integer.valueOf(portField.getText()));
+                currentQuery.setDatabaseName(dbNameField.getText());
+                currentQuery.setUsername(userNameField.getText());
+                currentQuery.setPassword(pwdField.getText());
+                currentQuery.setQuery(queryArea.getText());
+                DatabaseQueryWrapper wrapper = new DatabaseQueryWrapper();
+                wrapper.setQueries(tasks);
+                String path = Paths.get("").toAbsolutePath().toString()  + "/src/resources/" + birstProperties.getCurrentSpace().getName() + "/" + DATA_SOURCE_FILE;
+                        DatabaseQueryXmlHelper.saveToFile(path, wrapper );
+            }
+        });
 
         SplitPane sp = new SplitPane();
         sp.getItems().addAll(gridPane,loadQueryPane());
@@ -167,13 +263,19 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         GridPane.setConstraints(queryLable, 1,0);
         pane.getChildren().add(queryLable);
 
-        TextArea query = new TextArea();
-        query.setStyle("-fx-highlight-fill: lightgray; -fx-highlight-text-fill: firebrick; -fx-font-size: 12px;");
-        query.setPrefColumnCount(50);
-        query.setPrefRowCount(20);
-        GridPane.setConstraints(query, 1,2);
-        pane.getChildren().add(query);
+        queryArea = new TextArea();
+        queryArea.setStyle("-fx-highlight-fill: lightgray; -fx-highlight-text-fill: firebrick; -fx-font-size: 12px;");
+        queryArea.setPrefColumnCount(50);
+        queryArea.setPrefRowCount(20);
+        GridPane.setConstraints(queryArea, 1,2);
+        pane.getChildren().add(queryArea);
 
         return pane;
     }
+
+    private void refresh(){
+
+    }
+
+
 }
