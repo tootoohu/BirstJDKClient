@@ -62,6 +62,8 @@ public class LoginForm extends Application {
                 loginToken.Login(name,pwd);
                 if(loginToken.getToken() != null){
                     BirstProperties.getInstance().setLoginToken(loginToken.getToken());
+                    BirstProperties.getInstance().setUser(name);
+                    BirstProperties.getInstance().setPassword(pwd);
                     Main main = new Main();
                     try {
                         main.start(primaryStage);

@@ -4,7 +4,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+JAXB based xml parser to store the xml from object
+ */
 @XmlRootElement(name = "TaskList")
 public class DatabaseQueryWrapper {
 

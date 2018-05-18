@@ -1,5 +1,7 @@
 package com.infor.ui;
 
+import com.infor.admin.FileManagement;
+import com.infor.connect.DataConductorUtil;
 import com.infor.connect.DatabaseQuery;
 import com.infor.connect.DatabaseQueryWrapper;
 import com.infor.model.webservice.BirstProperties;
@@ -11,14 +13,16 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -26,6 +30,7 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
 
     private static BirstProperties birstProperties = BirstProperties.getInstance();
 
+    private FileManagement fileManagement =  new FileManagement();
     private TreeItem<DatabaseQuery> rootTreeItem;
 
     private List<DatabaseQuery> tasks;
@@ -162,7 +167,7 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         gridPane.getChildren().add(typeLable);
 
         ObservableList<String> options = FXCollections.observableArrayList(
-                DatabaseQuery.MSSQL, DatabaseQuery.ORACLE, DatabaseQuery.MYSQL);
+                DatabaseQuery.MSSQL,DatabaseQuery.MYSQL, DatabaseQuery.ORACLE, DatabaseQuery.ODBC);
         typeBox = new ComboBox(options);
         GridPane.setConstraints(typeBox, 3,0);
         gridPane.getChildren().add(typeBox);
@@ -191,6 +196,8 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         gridPane.getChildren().add(portField);
 
         Button runTaskBtn = new Button("Run Task");
+
+
         runTaskBtn.setPrefWidth(80);
         GridPane.setConstraints(runTaskBtn, 4,1);
         gridPane.getChildren().add(runTaskBtn);
@@ -230,18 +237,60 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         saveBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                currentQuery.setServerName(serverField.getText());
-                currentQuery.setQueryName(queryNameField.getText());
-                currentQuery.setDatabaseType(typeBox.getValue().toString());
-                currentQuery.setPort(Integer.valueOf(portField.getText()));
-                currentQuery.setDatabaseName(dbNameField.getText());
-                currentQuery.setUsername(userNameField.getText());
-                currentQuery.setPassword(pwdField.getText());
-                currentQuery.setQuery(queryArea.getText());
+                saveCurrentQuery();
                 DatabaseQueryWrapper wrapper = new DatabaseQueryWrapper();
                 wrapper.setQueries(tasks);
                 String path = Paths.get("").toAbsolutePath().toString()  + "/src/resources/" + birstProperties.getCurrentSpace().getName() + "/" + DATA_SOURCE_FILE;
                         DatabaseQueryXmlHelper.saveToFile(path, wrapper );
+            }
+        });
+
+        runTaskBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                saveCurrentQuery();
+
+                try {
+                    File f = DataConductorUtil.getTable(currentQuery);
+                    FileInputStream fileInputStream = new FileInputStream(f);
+                    DataInputStream dStream = new DataInputStream(fileInputStream);
+
+                    final int CHUNK_SIZE = 102400;
+                    System.out.println("File to upload -> " + f.getAbsolutePath() + " ->" + f.length());
+
+                    String uploadToken = fileManagement.beginDataUpload(birstProperties.getLoginToken(),birstProperties.getCurrentSpace().getId(),f.getName());
+                    byte[] bytes = new byte[CHUNK_SIZE];
+                    int read;
+                    do{
+                        read = dStream.read(bytes, 0,CHUNK_SIZE);
+                        String readed = new String(bytes);
+                        System.out.println("read -> " + readed);
+                        if(read > 0){
+                            fileManagement.uploadData(birstProperties.getLoginToken(),uploadToken,read,bytes);
+                        }
+                    }while (read > 0);
+
+
+                    fileManagement.finishDataUpload(birstProperties.getLoginToken(),uploadToken);
+
+                    while (fileManagement.isDataUploadComplete(birstProperties.getLoginToken(),uploadToken) == false){
+                        Thread.sleep(1000);
+                    }
+//                    String url = System.getProperty("jnlp.url");
+//                    if(url == null)
+//                        url = "https://pronto.beta.birst.com:443";
+//                    String result;
+                  //  WebUploader uploader = new WebUploader(birstProperties.getUser(),birstProperties.getPassword(),birstProperties.getCurrentSpace().getId(),url);
+                //    uploader.uploadFile(f.getParent(),f.getName(),false,false);
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
@@ -251,6 +300,17 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         sp.setDividerPositions(0.2f, 0.8f);
 
         return sp;
+    }
+
+    private void saveCurrentQuery(){
+        currentQuery.setServerName(serverField.getText());
+        currentQuery.setQueryName(queryNameField.getText());
+        currentQuery.setDatabaseType(typeBox.getValue().toString());
+        currentQuery.setPort(Integer.valueOf(portField.getText()));
+        currentQuery.setDatabaseName(dbNameField.getText());
+        currentQuery.setUsername(userNameField.getText());
+        currentQuery.setPassword(pwdField.getText());
+        currentQuery.setQuery(queryArea.getText());
     }
 
     private GridPane loadQueryPane(){

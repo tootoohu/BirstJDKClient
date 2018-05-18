@@ -25,6 +25,16 @@ public class BirstProperties {
     private final static String SOURCE_SPACE_NAME = "birst.source.spaceName";
 
     private String loginToken;
+    private String user;
+    private String password;
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     private UserSpace currentSpace;
 
@@ -56,13 +66,15 @@ public class BirstProperties {
     }
 
     public  String getUser() throws IOException {
-        Base64.Decoder decoder = Base64.getDecoder();
-        return new String( decoder.decode(properties.getProperty(USER_KEY)));
+//        Base64.Decoder decoder = Base64.getDecoder();
+//        return new String( decoder.decode(properties.getProperty(USER_KEY)));
+        return user;
     }
 
     public  String getPassword() throws IOException {
-        Base64.Decoder decoder = Base64.getDecoder();
-        return new String(decoder.decode(properties.getProperty(PWD_KEY)));
+//        Base64.Decoder decoder = Base64.getDecoder();
+//        return new String(decoder.decode(properties.getProperty(PWD_KEY)));
+        return password;
     }
 
     public  String getSourceSpaceName(){

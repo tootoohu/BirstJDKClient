@@ -1,13 +1,12 @@
 package test.com.infor.admin;
 
+import com.infor.admin.FileManagement;
 import com.infor.connect.DatabaseQuery;
 import com.infor.connect.DatabaseQueryWrapper;
 import com.infor.util.DatabaseQueryXmlHelper;
 import org.junit.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
+import java.io.*;
 
 
 public class DatabaseQueryTest {
@@ -44,4 +43,38 @@ public class DatabaseQueryTest {
 
     }
 
+    @Test
+    public void testRead(){
+        FileManagement fileManagement = new FileManagement();
+        File f = new File("C:\\Users\\shu\\AppData\\Local\\Temp\\shu_6803267988035913641.tmp\\Plan.txt");
+        try {
+            FileInputStream fileInputStream = new FileInputStream(f);
+            DataInputStream dStream = new DataInputStream(fileInputStream);
+
+
+            final int CHUNK_SIZE = 102400;
+            System.out.println("File to upload -> " + f.getAbsolutePath() + " ->" + f.length());
+
+            byte[] bytes = new byte[CHUNK_SIZE];
+            int read = 0;
+            do{
+                read = dStream.read(bytes,0, CHUNK_SIZE);
+
+                String readStr = new String(bytes);
+                System.out.println("read -> " + readStr);
+                if(bytes.length > 0){
+                    // fileManagement.uploadData(birstProperties.getLoginToken(),uploadToken,bytes.length,bytes);
+                }
+            }while (read > 0);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        //  String uploadToken = fileManagement.beginDataUpload(birstProperties.getLoginToken(),birstProperties.getCurrentSpace().getId(),f.getName());
+
+    }
 }

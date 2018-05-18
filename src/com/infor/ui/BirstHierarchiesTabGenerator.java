@@ -2,7 +2,7 @@ package com.infor.ui;
 
 import com.birst.HierarchyMetadata;
 import com.birst.LevelMetadata;
-import com.infor.admin.BirstDataLoadManagement;
+import com.infor.admin.BirstDataLoadManager;
 import com.infor.util.BirstXmlReader;
 import com.infor.util.DataSourceContainer;
 import javafx.collections.ObservableList;
@@ -40,7 +40,7 @@ public class BirstHierarchiesTabGenerator {
         StackPane treePane = new StackPane();
 
         rootTreeItem.setExpanded(true);
-        DataSourceContainer container = BirstDataLoadManagement.loadFromFile("src/resources/Infor-CSI-Suite-10_0_0_0-Parent-Dev-Master/");
+        DataSourceContainer container = BirstDataLoadManager.loadFromFile("src/resources/Infor-CSI-Suite-10_0_0_0-Parent-Dev-Master/");
 
         TreeItem levelTreeItem = new TreeItem<>();
        // loadTreeItems(rootTreeItem, container.getBirstXmlHierarchyMap());

@@ -7,6 +7,9 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+/*
+for store the xml
+ */
 public class DatabaseQuery {
 
     public static final String MSSQL = "Microsoft SQL Server";

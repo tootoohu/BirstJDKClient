@@ -4,13 +4,13 @@ import com.infor.util.BirstXmlWriter;
 import com.infor.util.DataSourceContainer;
 import com.infor.util.XmlWriterInterface;
 
-public class ExportManagement {
+public class ExportManager {
 
 
     private DataSourceManagement dataSourceManagement;
 
 
-    public ExportManagement(DataSourceManagement dsm){
+    public ExportManager(DataSourceManagement dsm){
 
         this.dataSourceManagement = dsm;
     }

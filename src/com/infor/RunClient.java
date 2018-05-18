@@ -7,6 +7,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.ws.BindingProvider;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
@@ -24,7 +25,12 @@ public class RunClient {
 
       //  test();
        // init();
-        testConnect();
+    //    testConnect();
+        File df = File.createTempFile("birst", (String)null);
+        String dir = df.getAbsolutePath();
+        df.delete();
+        File dirFile = new File(dir);
+        dirFile.mkdir();
     }
 
     public interface  Counter{

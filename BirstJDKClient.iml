@@ -33,5 +33,10 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="bc-fips-1.0.0" level="project" />
+    <orderEntry type="library" name="xmltooling-1.4.2" level="project" />
+    <orderEntry type="library" name="opensaml-2.6.2" level="project" />
+    <orderEntry type="library" name="joda-time-2.9" level="project" />
+    <orderEntry type="library" name="sqljdbc-4" level="project" />
   </component>
 </module>

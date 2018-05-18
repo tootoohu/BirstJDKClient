@@ -1,20 +1,16 @@
 package com.infor;
 
-import com.birst.HierarchyMetadata;
-import com.birst.StagingTableSubClass;
 import com.birst.UserSpace;
-import com.infor.admin.ExportManagement;
+import com.infor.admin.ExportManager;
 import com.infor.admin.DataSourceManagement;
 import com.infor.admin.SpaceManagement;
 import com.infor.model.webservice.BirstProperties;
-import com.infor.model.webservice.SourceColumnEntry;
 import com.infor.model.webservice.SourceEntry;
 import com.infor.model.webservice.UserSpaceConverter;
 import com.infor.ui.BirstConnectTabGenerator;
 import com.infor.ui.BirstHierarchiesTabGenerator;
 import com.infor.ui.BirstSourcesTabGenerator;
 import com.infor.ui.LocalTabGenerator;
-import com.infor.util.BirstXmlReader;
 import com.infor.util.DataSourceContainer;
 import javafx.application.Application;
 
@@ -27,13 +23,11 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Main extends Application {
 
@@ -43,7 +37,7 @@ public class Main extends Application {
     private BirstProperties birstProperties;
 
     private DataSourceManagement dataSourceManagement =  new DataSourceManagement();
-    private ExportManagement exportManagement;
+    private ExportManager exportManagement;
     private SpaceManagement spaceManagement = new SpaceManagement();
 
     @Override
@@ -85,7 +79,7 @@ public class Main extends Application {
         birstProperties = BirstProperties.getInstance();
         dataSourceContainer = new DataSourceContainer();
         dataSourceContainer.loadXmlDocument();
-        exportManagement = new ExportManagement(dataSourceManagement);
+        exportManagement = new ExportManager(dataSourceManagement);
         }
 
     private ComboBox loadComboxForSpaces(){

@@ -1,7 +1,7 @@
 package com.infor.ui;
 
 import com.birst.*;
-import com.infor.admin.BirstDataLoadManagement;
+import com.infor.admin.BirstDataLoadManager;
 import com.infor.admin.SpaceManagement;
 import com.infor.model.webservice.BirstProperties;
 import com.infor.util.BirstXmlReader;
@@ -12,39 +12,27 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
-import javafx.util.converter.NumberStringConverter;
 import org.xml.sax.SAXException;
-import sun.reflect.generics.tree.Tree;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 public class BirstSourcesTabGenerator<T> implements XmlInterface{
 
@@ -68,7 +56,7 @@ public class BirstSourcesTabGenerator<T> implements XmlInterface{
         StackPane treePane = new StackPane();
         TreeItem rootTreeItem = new TreeItem<>("All");
 
-        DataSourceContainer container = BirstDataLoadManagement.loadFromFile("src/resources/Infor-CSI-Suite-10_0_0_0-Parent-Dev-Master/");
+        DataSourceContainer container = BirstDataLoadManager.loadFromFile("src/resources/Infor-CSI-Suite-10_0_0_0-Parent-Dev-Master/");
 
         treePane.getChildren().add(loadTree(rootTreeItem,container.getBirstXmlSourceMap()));
 

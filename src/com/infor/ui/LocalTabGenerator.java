@@ -3,7 +3,7 @@ package com.infor.ui;
 import com.birst.HierarchyMetadata;
 import com.birst.StagingTableSubClass;
 import com.infor.admin.DataSourceManagement;
-import com.infor.admin.ExportManagement;
+import com.infor.admin.ExportManager;
 import com.infor.model.webservice.BirstProperties;
 import com.infor.model.webservice.SourceColumnEntry;
 import com.infor.model.webservice.SourceEntry;
@@ -33,7 +33,7 @@ public class LocalTabGenerator {
 
     private   DataSourceManagement dataSourceManagement =  new DataSourceManagement();
 
-    private ExportManagement exportManagement = new ExportManagement(dataSourceManagement);;
+    private ExportManager exportManagement = new ExportManager(dataSourceManagement);;
 
     static SourceEntry currentSourceEntry;
 
