@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane dividerPositions="0.5" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.infor.ui.ManageSourceTab">
+    <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="256.0">
+            <children>
+                <TreeView fx:id="sourceTreeview" editable="true" layoutX="-1.0" layoutY="0.0" prefHeight="550.0" prefWidth="229.0" />
+            </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="240.0">
+            <children>
+                <TabPane layoutX="-28.0" layoutY="4.0" prefHeight="542.0" prefWidth="635.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab text="Columns">
+                            <content>
+                                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <TableView fx:id="sourceColumnTableView" prefHeight="513.0" prefWidth="635.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <columns>
+                                                <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Name" />
+                                                <TableColumn fx:id="widthColumn" prefWidth="75.0" text="Width" />
+                                    <TableColumn fx:id="lockTypeColumn" prefWidth="75.0" text="Lock Type" />
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Script">
+                            <content>
+                                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+            </children>
+        </AnchorPane>
+    </items>
+</SplitPane>
