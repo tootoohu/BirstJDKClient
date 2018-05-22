@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane dividerPositions="0.3" prefHeight="577.0" prefWidth="670.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.infor.ui.DataSourceTab">
+   <items>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <TreeView fx:id="treeView" editable="true" onEditCommit="#onTreeViewEditCommit" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </StackPane>
+      <SplitPane dividerPositions="0.3" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+        <items>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="14.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="4.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="16.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="4.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label alignment="TOP_RIGHT" prefHeight="17.0" prefWidth="89.0" text="Query Name:" GridPane.halignment="RIGHT" />
+                  <Label alignment="CENTER_RIGHT" text="Server Name:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Label alignment="CENTER_RIGHT" text="Databse Name:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <Label text="Password:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Label text="Database Type:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
+                  <Label text="Port(blank=default)" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Label alignment="CENTER_RIGHT" text="UserName:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Label text="Replacement:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <Button fx:id="saveBtn" alignment="CENTER" mnemonicParsing="false" onAction="#onSaveBtnAction" prefWidth="64.0" text="Save" GridPane.columnIndex="6" GridPane.halignment="RIGHT" />
+                  <Button fx:id="runTaskBtn" mnemonicParsing="false" onAction="#onRunTaskBtnAction" text="Run Task" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <TextField fx:id="queryNameField" GridPane.columnIndex="2" />
+                  <TextField fx:id="serverField" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <TextField fx:id="dbNameField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <TextField fx:id="userNameField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <TextField fx:id="portField" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                  <TextField GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="typeBox" GridPane.columnIndex="5" />
+                  <PasswordField fx:id="pwdField" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="2.0" right="2.0" top="10.0" />
+               </padding>
+            </GridPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" percentHeight="15.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" percentHeight="70.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TextArea fx:id="queryArea" prefHeight="259.0" prefWidth="455.0" GridPane.rowIndex="1" />
+                        <Label prefHeight="17.0" prefWidth="72.0" text="Query:" />
+                     </children>
+                  </GridPane>
+               </children>
+            </StackPane>
+        </items>
+      </SplitPane>
+   </items>
+</SplitPane>

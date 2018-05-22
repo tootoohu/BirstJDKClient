@@ -16,7 +16,7 @@ public class ExportManager {
     }
 
     public void Export(String tokenId, String spaceId, String spaceName){
-        DataSourceContainer dsc = dataSourceManagement.ReadFromSpace(tokenId, spaceId);
+        DataSourceContainer dsc = dataSourceManagement.readFromSpace(tokenId, spaceId);
         XmlWriterInterface writer = new BirstXmlWriter();
         writer.writeSourceList(spaceName,dsc.getSources());
         writer.writeHierarchyList(spaceName, dsc.getHierarchies());

@@ -1,45 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.5" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.infor.ui.ManageSourceTab">
+<SplitPane dividerPositions="0.3" prefHeight="552.0" prefWidth="649.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.infor.ui.ManageSourceTab">
     <items>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="256.0">
-            <children>
-                <TreeView fx:id="sourceTreeview" editable="true" layoutX="-1.0" layoutY="0.0" prefHeight="550.0" prefWidth="229.0" />
-            </children>
-        </AnchorPane>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="240.0">
-            <children>
-                <TabPane layoutX="-28.0" layoutY="4.0" prefHeight="542.0" prefWidth="635.0" tabClosingPolicy="UNAVAILABLE">
-                    <tabs>
-                        <Tab text="Columns">
-                            <content>
-                                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                    <children>
-                                        <TableView fx:id="sourceColumnTableView" prefHeight="513.0" prefWidth="635.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <columns>
-                                                <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Name" />
-                                                <TableColumn fx:id="widthColumn" prefWidth="75.0" text="Width" />
-                                    <TableColumn fx:id="lockTypeColumn" prefWidth="75.0" text="Lock Type" />
-                                            </columns>
-                                        </TableView>
-                                    </children>
-                                </AnchorPane>
-                            </content>
-                        </Tab>
-                        <Tab text="Script">
-                            <content>
-                                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                            </content>
-                        </Tab>
-                    </tabs>
-                </TabPane>
-            </children>
-        </AnchorPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+                <TreeView fx:id="sourceTreeview" editable="true" prefHeight="550.0" prefWidth="609.0" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="550.0" prefWidth="446.0">
+         <children>
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Columns">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="sourceColumnTableView" editable="true" layoutX="7.0" layoutY="8.0" prefHeight="521.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                    <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Name" />
+                                    <TableColumn fx:id="unknownValueColumn" prefWidth="75.0" text="UnknownValue" />
+                                    <TableColumn fx:id="dataTypeColumn" prefWidth="75.0" text="DataType" />
+                                    <TableColumn fx:id="levelNameColumn" prefWidth="75.0" text="LevelName" />
+                                    <TableColumn fx:id="widthColumn" prefWidth="75.0" text="Width" />
+                                    <TableColumn fx:id="lockTypeColumn" prefWidth="75.0" text="LockType" />
+                                    <TableColumn fx:id="hierarchyNameColumn" prefWidth="75.0" text="HierarchyName" />
+                                    <TableColumn fx:id="analyzeMeasureColumn" prefWidth="75.0" text="AnalyzeMeasure" />
+                                    <TableColumn fx:id="measureColumn" prefWidth="75.0" text="Measure" />
+                                    <TableColumn fx:id="analyzeByDateColumn" prefWidth="75.0" text="AnalyzeByDate" />
+                                    <TableColumn fx:id="formatColumn" prefWidth="75.0" text="Format" />
+                                    <TableColumn fx:id="enableSecFilterColumn" prefWidth="75.0" text="EnableSecurityFilter" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Script">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </StackPane>
     </items>
 </SplitPane>

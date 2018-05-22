@@ -9,10 +9,11 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 public class DatabaseQueryXmlHelper {
 
-    public static List<DatabaseQuery> loadDataFromFile(String path) {
+    public static Map<String,DatabaseQuery> loadDataFromFile(String path) {
         try {
             File file = new File(path);
             if(file.exists()){

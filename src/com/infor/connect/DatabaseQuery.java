@@ -111,5 +111,33 @@ public class DatabaseQuery {
         this.databaseType = databaseType;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        DatabaseQuery that = (DatabaseQuery) o;
+
+        if (port != that.port) return false;
+        if (serverName != null ? !serverName.equals(that.serverName) : that.serverName != null) return false;
+        if (databaseName != null ? !databaseName.equals(that.databaseName) : that.databaseName != null) return false;
+        if (username != null ? !username.equals(that.username) : that.username != null) return false;
+        if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (databaseType != null ? !databaseType.equals(that.databaseType) : that.databaseType != null) return false;
+        if (query != null ? !query.equals(that.query) : that.query != null) return false;
+        return queryName != null ? queryName.equals(that.queryName) : that.queryName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = serverName != null ? serverName.hashCode() : 0;
+        result = 31 * result + (databaseName != null ? databaseName.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + port;
+        result = 31 * result + (databaseType != null ? databaseType.hashCode() : 0);
+        result = 31 * result + (query != null ? query.hashCode() : 0);
+        result = 31 * result + (queryName != null ? queryName.hashCode() : 0);
+        return result;
+    }
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane dividerPositions="0.3" prefHeight="517.0" prefWidth="675.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.infor.ui.HierarchiesTab">
+   <items>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <TreeView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </StackPane>
+      <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="13.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" percentHeight="7.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label prefHeight="17.0" prefWidth="182.0" text="Filter to a data source" GridPane.columnIndex="1" />
+            <ComboBox fx:id="sourceCombox" prefHeight="25.0" prefWidth="481.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="30.0" prefWidth="106.0" text="Save" GridPane.columnIndex="2" />
+            <TableView fx:id="levelTableView" editable="true" prefHeight="386.0" prefWidth="212.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+              <columns>
+                <TableColumn fx:id="selectColumn" prefWidth="60.0" text="Select" />
+                <TableColumn fx:id="nameColumn" prefWidth="218.0" text="Name" />
+              </columns>
+            </TableView>
+         </children>
+      </GridPane>
+   </items>
+</SplitPane>

@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class MainForm {
 
@@ -40,13 +41,14 @@ public class MainForm {
     private ObservableList<UserSpace> options;
     @FXML
     private ComboBox<UserSpace> comboBox;
-
+    @FXML
+    private Button downloadBtn;
     @FXML
     private  Tab manageSourceTab;
     @FXML
     private Tab hierarchiesTab;
     @FXML
-    private Tab DataSourceTab;
+    private Tab dataSourceTab;
 
     private void loadManageSourceTab(){
         FXMLLoader loader = new FXMLLoader();
@@ -58,6 +60,28 @@ public class MainForm {
             e.printStackTrace();
         }
 
+    }
+
+    private void loadHierarchiesTab(){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(LoginForm.class.getResource("HierarchiesTab.fxml"));
+        try {
+            SplitPane sp = (SplitPane) loader.load();
+            hierarchiesTab.setContent(sp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadDataSourceTab(){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(LoginForm.class.getResource("DataSourceTab.fxml"));
+        try {
+            SplitPane sp = (SplitPane) loader.load();
+            dataSourceTab.setContent(sp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -82,10 +106,22 @@ public class MainForm {
                 }
             }
         });
+        comboBox.getSelectionModel().select(0);
+        birstProperties.setCurrentSpace(spaces.get(0));
 
         loadManageSourceTab();
+        loadHierarchiesTab();
+        loadDataSourceTab();
     }
 
+    @FXML
+    private void onDownloadBtnAction(){
+        UserSpace us = birstProperties.getCurrentSpace();
+        exportManagement.Export(birstProperties.getLoginToken(),us.getId(),us.getName());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Download succeed!");
+        Optional<ButtonType> result = alert.showAndWait();
 
+    }
 
 }

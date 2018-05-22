@@ -31,7 +31,7 @@ public class DatabaseQueryTest {
         dq.setDatabaseType("Oracle");
         dq.setDatabaseName("901");
         dq.setServerName("server name");
-        wrapper.getQueries().add(dq);
+       // wrapper.getQueries().add(dq);
         String path = "e:/path/a.xml";
         File f = new File(path);
         File folder = new File(f.getParent());

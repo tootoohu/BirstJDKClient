@@ -92,7 +92,7 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
         String path = "resources/" + birstProperties.getCurrentSpace().getName() + "/" + DATA_SOURCE_FILE;
         System.out.println(" data source file " + path);
 
-        tasks = DatabaseQueryXmlHelper.loadDataFromFile(path);
+      //  tasks = DatabaseQueryXmlHelper.loadDataFromFile(path);
 
         if(tasks != null){
             for (DatabaseQuery query: tasks) {
@@ -239,7 +239,7 @@ public class BirstConnectTabGenerator implements TabGeneratorInterface{
             public void handle(ActionEvent event) {
                 saveCurrentQuery();
                 DatabaseQueryWrapper wrapper = new DatabaseQueryWrapper();
-                wrapper.setQueries(tasks);
+              //  wrapper.setQueries(tasks);
                 String path = Paths.get("").toAbsolutePath().toString()  + "/src/resources/" + birstProperties.getCurrentSpace().getName() + "/" + DATA_SOURCE_FILE;
                         DatabaseQueryXmlHelper.saveToFile(path, wrapper );
             }

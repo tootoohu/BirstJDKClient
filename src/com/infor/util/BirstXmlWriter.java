@@ -134,7 +134,7 @@ public class BirstXmlWriter implements XmlWriterInterface {
 
         }
         WriteToFile(doc, file);
-           }
+    }
 
     private File PrepareFile(String path, String name){
         File directory = new File( Paths.get("").toAbsolutePath().toString() + "/src/resources/" + path);

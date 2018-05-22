@@ -42,12 +42,13 @@ public class DataSourceManagement extends AbstractManagement{
         return stagingTableSubClass;
     }
 
-    public void setSourceDetails(String token, String spaceId, SourceEntry sourceEntry, List<SourceColumnEntry> columns){
-        if(token == null || spaceId == null || sourceEntry == null || columns == null)
+
+    public void setSourceDetails(String token, String spaceId, String sourceName, List<SourceColumnEntry> columns){
+        if(token == null || spaceId == null || sourceName == null || columns == null)
             return;
 
         StagingTableSubClass tableSubClass = new StagingTableSubClass();
-        tableSubClass.setName(sourceEntry.getName());
+        tableSubClass.setName(sourceName);
         ArrayOfSourceColumnSubClass columnSubClass = new ArrayOfSourceColumnSubClass();
         //add level for grain
         ArrayOfArrayOfString levels = new ArrayOfArrayOfString();
@@ -58,8 +59,8 @@ public class DataSourceManagement extends AbstractManagement{
 
         ArrayOfString selfLevel = new ArrayOfString();
 
-        selfLevel.getString().add(sourceEntry.getName());
-        selfLevel.getString().add(sourceEntry.getName());
+        selfLevel.getString().add(sourceName);
+        selfLevel.getString().add(sourceName);
 
 
         levels.getArrayOfString().add(timeLevel);
@@ -83,10 +84,10 @@ public class DataSourceManagement extends AbstractManagement{
             scs.setMeasure(entry.isMeasure());
             scs.setAnalyzeByDate(entry.isAnalyzeByDate());
             scs.setAnalyzeMeasure(entry.isMeasure());
-            scs.setHierarchyName(entry.getHierarchyName(sourceEntry.getName()));
+            scs.setHierarchyName(entry.getHierarchyName(sourceName));
             scs.setAnalyzeMeasure(entry.isMeasure());
             scs.setFormat("");
-            scs.setLevelName(entry.getHierarchyName(sourceEntry.getName()));
+            scs.setLevelName(entry.getHierarchyName(sourceName));
             scs.setOriginalName(entry.getName());
             scs.setUnknownValue("Unknown Value");
             scs.setSourceFileColumn(null);
@@ -101,7 +102,7 @@ public class DataSourceManagement extends AbstractManagement{
         }
 
         tableSubClass.setColumns(columnSubClass);
-        tableSubClass.setOriginalName(sourceEntry.getName());
+        tableSubClass.setOriginalName(sourceName);
         tableSubClass.setDisabled(false);
 
 
@@ -125,11 +126,29 @@ public class DataSourceManagement extends AbstractManagement{
         getClient().setSourceDetails(token,spaceId,tableSubClass);
     }
 
+    public void setSourceDetails(String token, String spaceId,  StagingTableSubClass stagingTableSubClass){
+        if(token == null || spaceId == null || stagingTableSubClass == null )
+            return;
+
+        GregorianCalendar gc = new GregorianCalendar();
+        try {
+            stagingTableSubClass.setLastModifiedDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        getClient().setSourceDetails(token,spaceId,stagingTableSubClass);
+    }
+
     public void updateHierarchy(String token, String spaceId,SourceEntry sourceEntry, List<SourceColumnEntry> columns){
         HierarchyMetadata hierarchyMetadata = getHierarchyMetadata(sourceEntry,columns);
         getClient().updateHierarchy(token,spaceId,sourceEntry.getName(), hierarchyMetadata);
     }
 
+    public void updateHierarchy(String token, String spaceId, String name, HierarchyMetadata hierarchyMetadata){
+
+        getClient().updateHierarchy(token,spaceId,name, hierarchyMetadata);
+    }
 
     public List<CustomSubjectArea> getODBCTableResult(String token, String spaceId){
         MetaDataResult result = getClient().getODBCMetaDataSubjectAreas(token,spaceId);
@@ -185,7 +204,7 @@ public class DataSourceManagement extends AbstractManagement{
 
     }
 
-    public DataSourceContainer ReadFromSpace(String tokenId, String spaceId ){
+    public DataSourceContainer readFromSpace(String tokenId, String spaceId ){
         DataSourceContainer dataSourceContainer = new DataSourceContainer();
 
         List<String> hierarchyList = getAllHierarchies(tokenId,spaceId);

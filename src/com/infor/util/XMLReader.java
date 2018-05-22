@@ -34,6 +34,9 @@ public  class XMLReader implements XmlInterface{
     }
 
     public Document getDoc(String inputXmlPath) {
+        File f = new File(inputXmlPath);
+        if(!f.exists())
+            return null;
         try {
             return db.parse(inputXmlPath);
         } catch (SAXException e) {

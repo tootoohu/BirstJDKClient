@@ -66,7 +66,7 @@ public class LoginForm extends Application {
             BirstProperties.getInstance().setLoginToken(loginToken.getToken());
             BirstProperties.getInstance().setUser(name);
             BirstProperties.getInstance().setPassword(pwd);
-            Main main = new Main();
+     //       Main main = new Main();
             //Obsolete former form
 //            try {
 //                main.start(primaryStage);

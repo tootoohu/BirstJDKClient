@@ -86,7 +86,7 @@ public class LocalTabGenerator {
 
                 StagingTableSubClass tableSubClass = dataSourceManagement.getSourceDetails(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry.getName());
                 if (tableSubClass != null){
-                    dataSourceManagement.setSourceDetails(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry,dataSourceContainer.getByKey(currentSourceEntry));
+                    dataSourceManagement.setSourceDetails(birstProperties.getLoginToken(),birstProperties.getTargetSpaceId(),currentSourceEntry.getName(),dataSourceContainer.getByKey(currentSourceEntry));
                 }
             }
         });

@@ -39,6 +39,7 @@ public class SpaceManagement extends AbstractManagement{
     }
 
     public List<UserSpace> listSpaces(String token){
+
         List<UserSpace> list = getClient().listSpaces(token).getUserSpace();
         return list;
     }

@@ -19,6 +19,8 @@ public class BirstXmlReader extends XMLReader {
 
     public Map<String, StagingTableSubClass> readSources(String path){
         Document doc = getDoc(path);
+        if(doc == null)
+            return null;
         Element rootElement = doc.getDocumentElement();
 
         Map<String, StagingTableSubClass> map = new TreeMap<>();
@@ -144,7 +146,8 @@ public class BirstXmlReader extends XMLReader {
 
     public Map<String, HierarchyMetadata> readHierarchies(String path){
         Document doc = getDoc(path);
-
+        if(doc == null)
+            return null;
         Element rootElement = doc.getDocumentElement();
         Map<String, HierarchyMetadata> map = new TreeMap<>();
         NodeList nodes = rootElement.getChildNodes();
