@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="436.0" prefWidth="696.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.infor.ui.SelectSourceController">
+   <children>
+      <Label layoutX="18.0" layoutY="14.0" prefHeight="19.0" prefWidth="172.0" text="Select Table/View or Query" />
+      <ComboBox fx:id="sourceCombox" layoutX="18.0" layoutY="72.0" prefHeight="25.0" prefWidth="313.0" />
+      <TableView fx:id="columnTableView" layoutX="344.0" layoutY="42.0" prefHeight="328.0" prefWidth="328.0">
+        <columns>
+          <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Column" />
+          <TableColumn fx:id="selectColumn" prefWidth="75.0" text="Select" />
+        </columns>
+      </TableView>
+      <Button layoutX="215.0" layoutY="388.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="&lt; Back" />
+      <Button layoutX="329.0" layoutY="388.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Next &gt;" />
+      <Button layoutX="447.0" layoutY="388.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Cancel" />
+      <TextArea fx:id="queryArea" layoutX="19.0" layoutY="103.0" prefHeight="267.0" prefWidth="313.0" promptText="Input Query here" text="BI_Generate_DataSp 'BI_Fact_Financial_Income_Analysis_Full_BV_View',0,null" />
+      <Button layoutX="18.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="54.0" text="Run" />
+   </children>
+</AnchorPane>

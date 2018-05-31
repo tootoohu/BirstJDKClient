@@ -25,7 +25,7 @@ public class ReportManagementTest extends AbstractTest{
     @Test
     public void getReportData() throws Exception {
         String path = "/shared/Dashboard/CEO/Cash Flow/Cash Flow by Fiscal Period.viz";
-        //String path = "/shared/Dashboard/Units/Unit Analysis/Top 10 Units by Service Cost.viz"；
+
         CommandQueryResult result = reportManagement.getReportData(getToken(),getSpaceId(),path,"");
         List<ArrayOfString> rows = result.getRows().getArrayOfString();
         rows.forEach(k -> System.out.println(k.getString()));

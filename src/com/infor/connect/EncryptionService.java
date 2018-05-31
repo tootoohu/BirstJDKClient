@@ -15,6 +15,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import org.apache.log4j.Logger;
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
+@Deprecated
 public class EncryptionService {
     private static EncryptionService instance;
     private static String key;

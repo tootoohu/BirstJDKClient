@@ -1,4 +1,4 @@
-package com.infor.model.webservice;
+package com.infor.model.ui;
 
 import com.birst.UserSpace;
 import javafx.util.StringConverter;

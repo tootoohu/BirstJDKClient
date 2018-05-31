@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="407.0" prefWidth="698.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.infor.ui.SourceDetailController">
+   <children>
+      <Label layoutX="43.0" layoutY="26.0" text="Source Detail" />
+      <TableView fx:id="tableView" layoutX="43.0" layoutY="52.0" prefHeight="303.0" prefWidth="641.0">
+        <columns>
+          <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Name" />
+          <TableColumn fx:id="hierarchyColumn" prefWidth="75.0" text="Hierarchy" />
+            <TableColumn fx:id="widthColumn" prefWidth="75.0" text="Width" />
+            <TableColumn fx:id="typeColumn" prefWidth="75.0" text="Type" />
+            <TableColumn fx:id="measureColumn" prefWidth="75.0" text="Measure" />
+            <TableColumn fx:id="analyzeMeasureColumn" prefWidth="75.0" text="Analyze Measure" />
+            <TableColumn fx:id="analyzeByDateColumn" prefWidth="75.0" text="Analyze By Date" />
+            <TableColumn fx:id="keyColumn" prefWidth="75.0" text="KeyColumn" />
+        </columns>
+      </TableView>
+      <Button layoutX="158.0" layoutY="368.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="&lt; Back" />
+      <Button layoutX="289.0" layoutY="368.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="OK" />
+      <Button layoutX="414.0" layoutY="368.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Cancel" />
+   </children>
+</AnchorPane>

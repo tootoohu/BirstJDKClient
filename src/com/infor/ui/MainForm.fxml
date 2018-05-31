@@ -9,18 +9,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<SplitPane dividerPositions="0.08412698412698413" orientation="VERTICAL" prefHeight="632.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.infor.ui.MainForm">
+<SplitPane dividerPositions="0.1" orientation="VERTICAL" prefHeight="649.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.infor.ui.MainForm">
   <items>
-    <StackPane alignment="TOP_LEFT" maxHeight="50.0" minHeight="30.0" prefHeight="50.0" prefWidth="931.0">
+    <StackPane alignment="TOP_LEFT" maxHeight="81.0" minHeight="30.0" prefHeight="79.0" prefWidth="931.0">
       <children>
-        <GridPane alignment="CENTER" minHeight="50.0" prefHeight="50.0" prefWidth="931.0">
+        <GridPane alignment="CENTER" prefHeight="26.0" prefWidth="931.0">
           <children>
-            <Label prefWidth="68.0" text="Space:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.valignment="BOTTOM">
+            <Label prefWidth="68.0" text="Space:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
               <font>
                 <Font size="14.0" />
               </font>
             </Label>
-            <ComboBox id="" fx:id="comboBox" prefHeight="70.0" prefWidth="305.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+            <ComboBox id="" fx:id="comboBox" prefHeight="25.0" prefWidth="305.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
@@ -29,19 +29,39 @@
                 </FXCollections>
               </items>
             </ComboBox>
-                  <Button fx:id="downloadBtn" mnemonicParsing="false" onAction="#onDownloadBtnAction" prefHeight="25.0" prefWidth="116.0" text="Download" GridPane.columnIndex="4" />
+                  <Button fx:id="downloadBtn" mnemonicParsing="false" onAction="#onDownloadBtnAction" prefHeight="25.0" prefWidth="116.0" text="Download" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <MenuBar fx:id="menuBar" prefHeight="25.0" prefWidth="886.0" GridPane.columnSpan="6">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Close" />
+                              <MenuItem fx:id="newSourceWizardMenu" mnemonicParsing="false" text="New Source Wizard" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Edit">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Delete" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
           </children>
           <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="171.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="132.0" minWidth="10.0" prefWidth="105.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           </columnConstraints>
           <rowConstraints>
-            <RowConstraints maxHeight="25.0" minHeight="10.0" percentHeight="30.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="25.0" minHeight="10.0" percentHeight="30.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="25.0" minHeight="10.0" percentHeight="50.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="25.0" minHeight="10.0" percentHeight="60.0" prefHeight="30.0" vgrow="SOMETIMES" />
           </rowConstraints>
         </GridPane>
       </children>
@@ -49,7 +69,7 @@
         <Insets />
       </padding>
     </StackPane>
-    <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+    <TabPane prefHeight="730.0" prefWidth="931.0" tabClosingPolicy="UNAVAILABLE">
       <tabs>
         <Tab fx:id="manageSourceTab" text="Manage Sources" />
         <Tab fx:id="hierarchiesTab" text="Hierarchies">
@@ -62,6 +82,11 @@
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
           </content>
         </Tab>
+            <Tab fx:id="reportTab" text="Report">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="506.0" prefWidth="931.0" />
+              </content>
+            </Tab>
       </tabs>
     </TabPane>
   </items>

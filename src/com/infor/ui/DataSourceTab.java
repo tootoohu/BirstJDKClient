@@ -11,18 +11,26 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.util.Callback;
+import org.apache.log4j.Logger;
 
+import javax.swing.event.DocumentEvent;
+import java.awt.event.KeyEvent;
 import java.io.*;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static javafx.scene.control.TreeItem.valueChangedEvent;
+
 public class DataSourceTab {
+    private static final Logger logger = Logger.getLogger(HierarchiesTab.class);
     private static BirstProperties birstProperties = BirstProperties.getInstance();
 
     private FileManagement fileManagement = new FileManagement();
@@ -54,6 +62,7 @@ public class DataSourceTab {
     private Button runTaskBtn;
 
     private static final String DATA_SOURCE_FILE = "DataSource.xml";
+    private static final String ALL_NODE = "All";
 
     @FXML
     private void initialize() {
@@ -64,7 +73,7 @@ public class DataSourceTab {
        ObservableList<String> options = FXCollections.observableArrayList(
                 DatabaseQuery.MSSQL,DatabaseQuery.MYSQL, DatabaseQuery.ORACLE, DatabaseQuery.ODBC);
         typeBox.setItems(options);
-        rootTreeItem = new TreeItem("All");
+        rootTreeItem = new TreeItem(ALL_NODE);
         rootTreeItem.setExpanded(true);
         loadTree();
     }
@@ -89,6 +98,7 @@ public class DataSourceTab {
 
         });
 
+
         loadTreeItemFromFile();
 
         final ContextMenu contextMenu = new ContextMenu();
@@ -96,8 +106,15 @@ public class DataSourceTab {
         addMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                TreeItem item = new TreeItem();
-                item.setValue("New Query");
+                TreeItem item = new TreeItem("New Query");
+                item.addEventHandler(TreeItem.valueChangedEvent(), new EventHandler<TreeItem.TreeModificationEvent<Object>>() {
+                    @Override
+                    public void handle(TreeItem.TreeModificationEvent<Object> event) {
+
+                        logger.info("Add New Query ");
+                        refreshQueryPane(event.getTreeItem());
+                    }
+                });
                 rootTreeItem.getChildren().add(item);
 
             }
@@ -113,8 +130,8 @@ public class DataSourceTab {
         });
 
 
-        MenuItem loadMenu = new MenuItem("Load");
-        loadMenu.setOnAction(new EventHandler<ActionEvent>() {
+        MenuItem importMenu = new MenuItem("Import");
+        importMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 loadTreeItemFromFile();
@@ -122,10 +139,11 @@ public class DataSourceTab {
             }
         });
 
-        contextMenu.getItems().addAll(addMenu, deleteMenu,loadMenu);
+        contextMenu.getItems().addAll(addMenu, deleteMenu,importMenu);
         treeView.setContextMenu(contextMenu);
         return treeView;
     }
+
 
     @FXML
     private void onTreeViewEditCommit(){
@@ -137,8 +155,9 @@ public class DataSourceTab {
 
     }
     private void loadTreeItemFromFile(){
+
         String path = "src/resources/" + birstProperties.getCurrentSpace().getName() + "/" + DATA_SOURCE_FILE;
-        System.out.println(" data source file " + path);
+        logger.info("load Tree Item from file " + path);
 
         rootTreeItem.getChildren().remove(0, rootTreeItem.getChildren().size());
         tasks = DatabaseQueryXmlHelper.loadDataFromFile(path);
@@ -147,6 +166,15 @@ public class DataSourceTab {
             for (String query : tasks.keySet()) {
                 TreeItem<String> treeItem = new TreeItem<>(query);
 
+                treeItem.addEventHandler(TreeItem.valueChangedEvent(), new EventHandler<TreeItem.TreeModificationEvent<Object>>() {
+                    @Override
+                    public void handle(TreeItem.TreeModificationEvent<Object> event) {
+
+                        System.out.println(event.getTreeItem().getValue());
+                        refreshQueryPane(event.getTreeItem());
+                    }
+                });
+
                 rootTreeItem.getChildren().add(treeItem);
             }
         }
@@ -154,28 +182,47 @@ public class DataSourceTab {
 
 
     private void refreshQueryPane(TreeItem item) {
-
+        logger.info("Refresh Query Pane ");
         currentQuery = treeView.getSelectionModel().getSelectedItem().getValue();
         if (currentQuery == null) {
             return;
         }
-        if(tasks != null){
-            DatabaseQuery databaseQuery = tasks.get(currentQuery);
-            if(databaseQuery != null){
-                queryNameField.setText(databaseQuery.getQueryName());
-                typeBox.setValue(databaseQuery.getDatabaseType());
-                serverField.setText(databaseQuery.getServerName());
-                portField.setText(String.valueOf(databaseQuery.getPort()));
-                dbNameField.setText(databaseQuery.getDatabaseName());
-                userNameField.setText(databaseQuery.getUsername());
-                pwdField.setText(databaseQuery.getPassword());
-                queryArea.setText(databaseQuery.getQuery());
+        if(currentQuery.equals(ALL_NODE)){
+            clearQueryPane();
+        }else {
+            if(tasks != null){
+                DatabaseQuery databaseQuery = tasks.get(currentQuery);
+                if(databaseQuery != null){
+                    queryNameField.setText(databaseQuery.getQueryName());
+                    queryNameField.setEditable(false);
+                    typeBox.setValue(databaseQuery.getDatabaseType());
+                    serverField.setText(databaseQuery.getServerName());
+                    portField.setText(String.valueOf(databaseQuery.getPort()));
+                    dbNameField.setText(databaseQuery.getDatabaseName());
+                    userNameField.setText(databaseQuery.getUsername());
+                    pwdField.setText(databaseQuery.getPassword());
+                    queryArea.setText(databaseQuery.getQuery());
+                }else {
+                    queryNameField.setText(currentQuery);
+                    queryNameField.setEditable(false);
+                    queryArea.setText("");
+                }
             }
         }
 
-
     }
 
+    private void clearQueryPane(){
+        queryNameField.setText("");
+        queryNameField.setEditable(false);
+        typeBox.setValue("");
+        serverField.setText("");
+        portField.setText("0");
+        dbNameField.setText("");
+        userNameField.setText("");
+        pwdField.setText("");
+        queryArea.setText("");
+    }
     private void saveCurrentQuery() {
         if(tasks == null){
             tasks = new HashMap<>();
@@ -199,6 +246,7 @@ public class DataSourceTab {
 
     @FXML
     private void onSaveBtnAction() {
+        logger.info("Save current Query to file");
         saveCurrentQuery();
 
         DatabaseQueryWrapper wrapper = new DatabaseQueryWrapper();
@@ -207,8 +255,10 @@ public class DataSourceTab {
         DatabaseQueryXmlHelper.saveToFile(path, wrapper);
     }
 
+
     @FXML
     private void onRunTaskBtnAction() {
+        logger.info("Run Task Action");
         saveCurrentQuery();
         DatabaseQuery dq = tasks.get(currentQuery);
         if(dq == null)
@@ -239,6 +289,9 @@ public class DataSourceTab {
             while (fileManagement.isDataUploadComplete(birstProperties.getLoginToken(), uploadToken) == false) {
                 Thread.sleep(1000);
             }
+            boolean result = fileManagement.isDataUploadComplete(birstProperties.getLoginToken(), uploadToken);
+            DialogHelper.showResultDialog("Run task ",result);
+
 //                    String url = System.getProperty("jnlp.url");
 //                    if(url == null)
 //                        url = "https://pronto.beta.birst.com:443";

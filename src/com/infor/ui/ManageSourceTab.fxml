@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -19,10 +20,28 @@
             <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab text="Columns">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <TableView fx:id="sourceColumnTableView" editable="true" layoutX="7.0" layoutY="8.0" prefHeight="521.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <content>
+                        <SplitPane dividerPositions="0.08" orientation="VERTICAL" prefHeight="483.0" prefWidth="352.0">
+                          <items>
+                              <GridPane prefHeight="14.0" prefWidth="450.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="3.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" percentHeight="100.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button fx:id="uploadButton" alignment="CENTER" mnemonicParsing="false" onAction="#onUploadButtonAction" prefHeight="25.0" prefWidth="75.0" text="Upload" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+                                    <Label fx:id="sourceLabel" alignment="CENTER" prefHeight="17.0" prefWidth="216.0">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </GridPane>
+                              <TableView fx:id="sourceColumnTableView" editable="true" prefHeight="495.0" prefWidth="450.0">
                                 <columns>
                                     <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Name" />
                                     <TableColumn fx:id="unknownValueColumn" prefWidth="75.0" text="UnknownValue" />
@@ -38,13 +57,9 @@
                                     <TableColumn fx:id="enableSecFilterColumn" prefWidth="75.0" text="EnableSecurityFilter" />
                                 </columns>
                               </TableView>
-                           </children></AnchorPane>
-                  </content>
-                </Tab>
-                <Tab text="Script">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
+                          </items>
+                        </SplitPane>
+                     </content>
                 </Tab>
               </tabs>
             </TabPane>

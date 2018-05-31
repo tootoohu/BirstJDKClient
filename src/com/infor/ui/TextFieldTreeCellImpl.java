@@ -54,6 +54,7 @@ public final class TextFieldTreeCellImpl extends TreeCell<String> {
         }
     }
 
+
     private void createTextField() {
         textField = new TextField(getString());
         textField.setOnKeyReleased(new EventHandler<KeyEvent>() {

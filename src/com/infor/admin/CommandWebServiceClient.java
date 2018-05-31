@@ -6,7 +6,7 @@ import com.birst.CommandWebServiceSoap;
 import javax.xml.ws.BindingProvider;
 import java.util.Map;
 
-public class CommandWebServiceClient {
+public final class CommandWebServiceClient {
 
    private static CommandWebServiceSoap soap;
 

@@ -1,4 +1,4 @@
-package com.infor.ui;
+package com.infor.model.ui;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;

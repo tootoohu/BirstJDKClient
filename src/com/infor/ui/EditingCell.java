@@ -49,7 +49,7 @@ public class EditingCell extends TableCell<SourceColumnSubClass, Object> {
         @Override
         public void updateItem(Object item, boolean empty) {
             super.updateItem(item, empty);
-            System.out.println("update item " + item);
+
             if (item != null) {
                 if (item instanceof String) {
                     setText((String) item);

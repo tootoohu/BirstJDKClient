@@ -17,6 +17,7 @@ public abstract class AbstractTest {
         String address = properties.getAddress();
         String userName = properties.getUser();
         String pwd = properties.getPassword();
+
         spaceId = properties.getTargetSpaceId();
         LoginToken loginToken = new LoginToken();
         loginToken.Login(userName,pwd);

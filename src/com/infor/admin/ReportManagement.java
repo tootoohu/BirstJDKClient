@@ -15,4 +15,6 @@ public class ReportManagement extends AbstractManagement{
 
         getClient().saveQueryReport(token,spaceId,path,name,query);
     }
+
+  //  public void
 }

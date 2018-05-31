@@ -25,12 +25,12 @@ public class RunClient {
 
       //  test();
        // init();
-    //    testConnect();
-        File df = File.createTempFile("birst", (String)null);
-        String dir = df.getAbsolutePath();
-        df.delete();
-        File dirFile = new File(dir);
-        dirFile.mkdir();
+        testConnect();
+//        File df = File.createTempFile("birst", (String)null);
+//        String dir = df.getAbsolutePath();
+//        df.delete();
+//        File dirFile = new File(dir);
+//        dirFile.mkdir();
     }
 
     public interface  Counter{
@@ -56,10 +56,23 @@ public class RunClient {
         requestContext.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,"https://login.bws.birst.com/CommandWebService.asmx");
         requestContext.put(BindingProvider.SESSION_MAINTAIN_PROPERTY, true);
 
-        String token = webservice.getCommandWebServiceSoap().login("shelley.hu@infor.com","Forwork123");
+        String token = webservice.getCommandWebServiceSoap().login("","");
         System.out.println(token);
         String jnlp = webservice.getCommandWebServiceSoap().getSpaceJNLPFile(token,"57baa258-f10c-44c2-9d19-3aa4ec89da6f","dcconfig.xml");
         System.out.println(jnlp);
+
+        FileNode fileNode = webservice.getCommandWebServiceSoap().getDirectoryContents(token,"9c89a600-cc29-47a5-9fea-ab0d5bcd3bf2","shared");
+        System.out.println(fileNode.getName());
+        System.out.println(fileNode.getChildren().getFileNode().size());
+
+        String path = "shared/Reports/Sales/Profit Over Time.viz";
+       CommandQueryResult result =  webservice.getCommandWebServiceSoap().getReportData(token,"9c89a600-cc29-47a5-9fea-ab0d5bcd3bf2",path, new ArrayOfFilter());
+       int count = result.getNumRowsReturned();
+        List<ArrayOfString> rows = result.getRows().getArrayOfString();
+        for(ArrayOfString aos : rows){
+            System.out.println(aos.getString());
+        }
+
 
     }
     public static void test(){

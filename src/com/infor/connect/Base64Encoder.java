@@ -1,5 +1,6 @@
 package com.infor.connect;
 
+@Deprecated
 public class Base64Encoder {
     private static char[] map1 = new char[64];
     private static byte[] map2;

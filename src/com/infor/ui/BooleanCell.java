@@ -1,10 +1,11 @@
 package com.infor.ui;
 
+import com.infor.model.ui.LevelColumn;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
 
-public class BooleanCell  extends TableCell<HierarchiesTab.LevelColumn, Boolean> {
+public class BooleanCell  extends TableCell<LevelColumn, Boolean> {
     private CheckBox checkBox;
     public BooleanCell() {
         checkBox = new CheckBox();

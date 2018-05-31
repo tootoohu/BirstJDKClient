@@ -1,21 +1,14 @@
 package com.infor.ui;
 
-import com.infor.Main;
 import com.infor.model.webservice.BirstProperties;
 import com.infor.model.webservice.LoginToken;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -48,7 +41,14 @@ public class LoginForm extends Application {
         loader.setLocation(LoginForm.class.getResource("LoginForm.fxml"));
         try {
             rootPane = (GridPane) loader.load();
+
             Scene scene = new Scene(rootPane);
+            rootPane.setStyle("-fx-background-color: white;");
+            scene.getStylesheets().add("Style.css");
+            primaryStage.setTitle("Birst Desktop Client");
+
+            Image image = new Image(LoginForm.class.getResourceAsStream("/resources/images/Icon.png"));
+            primaryStage.getIcons().add(image);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {

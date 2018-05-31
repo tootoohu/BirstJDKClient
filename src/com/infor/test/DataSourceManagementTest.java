@@ -32,7 +32,7 @@ public class DataSourceManagementTest extends AbstractTest{
         HierarchyMetadata hierarchyMetadata = new HierarchyMetadata();
         hierarchyMetadata.setName("Financial Income QA Analysis");
 
-        dataSourceManagement.createHierarchy(getToken(),getSpaceId(),null,null);
+      //  dataSourceManagement.createHierarchy(getToken(),getSpaceId(),null,null);
     }
 
     DataSourceManagement dataSourceManagement = new DataSourceManagement();

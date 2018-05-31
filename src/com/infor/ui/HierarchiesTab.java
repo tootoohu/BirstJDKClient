@@ -3,12 +3,10 @@ package com.infor.ui;
 import com.birst.*;
 import com.infor.admin.BirstDataLoadManager;
 import com.infor.admin.DataSourceManagement;
+import com.infor.model.ui.Checkbox;
+import com.infor.model.ui.LevelColumn;
 import com.infor.model.webservice.BirstProperties;
 import com.infor.util.DataSourceContainer;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,11 +14,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +25,7 @@ import java.util.Map;
 
 public class HierarchiesTab {
 
+    private static final Logger logger = Logger.getLogger(HierarchiesTab.class);
     private String currentNode;
     private static BirstProperties birstProperties = BirstProperties.getInstance();
     private TreeItem rootTreeItem = new TreeItem<>("All");
@@ -63,8 +61,6 @@ public class HierarchiesTab {
     }
 
 
-
-
     private Map<String,HierarchyMetadata> getCurrentHierarchyMap(){
         return currentHierarchyMap;
     }
@@ -98,7 +94,7 @@ public class HierarchiesTab {
         addMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("add item");
+                logger.info("Add New Item");
                 TreeItem item = new TreeItem("New Item");
                 rootTreeItem.getChildren().add(item);
             }
@@ -110,13 +106,13 @@ public class HierarchiesTab {
             public void handle(ActionEvent event) {
                 TreeItem c = (TreeItem)treeView.getSelectionModel().getSelectedItem();
                 boolean remove = c.getParent().getChildren().remove(c);
-                System.out.println("Remove");
+                logger.info("Remove " + c.getValue());
 
             }
         });
 
-        MenuItem loadMenu = new MenuItem("Load");
-        loadMenu.setOnAction(new EventHandler<ActionEvent>() {
+        MenuItem importMenu = new MenuItem("Import");
+        importMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 loadTreeItemFromFile();
@@ -124,8 +120,8 @@ public class HierarchiesTab {
             }
         });
 
-        MenuItem syncMenu = new MenuItem("Synchronize");
-        syncMenu.setOnAction(new EventHandler<ActionEvent>() {
+        MenuItem loadMenu = new MenuItem("Load");
+        loadMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 //                StagingTableSubClass sts = container.getBirstXmlSourceMap().get(currentNode);
@@ -137,7 +133,7 @@ public class HierarchiesTab {
             }
         });
 
-        contextMenu.getItems().addAll(addMenu, deleteMenu, loadMenu,syncMenu);
+        contextMenu.getItems().addAll(addMenu, deleteMenu, importMenu,loadMenu);
         treeView.setContextMenu(contextMenu);
         return treeView;
     }
@@ -153,7 +149,9 @@ public class HierarchiesTab {
 
     @FXML
     private void onSaveButtonAction(){
+        logger.info("Save Button Action");
         System.out.println(selectColumn.getText());
+        currentNode = ((TreeItem)treeView.getSelectionModel().selectedItemProperty().getValue()).getValue().toString();
         if(currentNode == null || currentNode.equals("All")){
             return;
         }
@@ -161,8 +159,10 @@ public class HierarchiesTab {
         ObservableList<LevelColumn> list = this.levelTableView.getItems();
 
         HierarchyMetadata hm = getCurrentHierarchyMap().get(currentNode);
-        if(hm == null)
+        if(hm == null){
+            createNewHierarchy(list);
             return;
+        }
 
         ArrayOfString keyColumns = new ArrayOfString();
         list.forEach(k -> {
@@ -176,10 +176,35 @@ public class HierarchiesTab {
             LevelMetadata levelMetadata = levelMetadataList.get(0);
             levelMetadata.setColumnNames(keyColumns);
         }
+        logger.info("Update Hierarchy " + currentNode);
+        boolean result = dataSourceManagement.updateHierarchy( birstProperties.getLoginToken(),birstProperties.getCurrentSpace().getId(),currentNode, hm);
+        DialogHelper.showResultDialog("Update Hierarchy " + currentNode, result);
 
-        dataSourceManagement.updateHierarchy( birstProperties.getLoginToken(),birstProperties.getCurrentSpace().getId(),currentNode, hm);
     }
 
+
+    private void createNewHierarchy(List<LevelColumn> columns){
+        logger.info("Create Hierarchy " + currentNode);
+        HierarchyMetadata hierarchyMetadata = new HierarchyMetadata();
+        hierarchyMetadata.setName(currentNode);
+
+        ArrayOfLevelMetadata metadata = new ArrayOfLevelMetadata();
+        LevelMetadata levelMetadata = new LevelMetadata();
+        levelMetadata.setName(currentNode);
+        levelMetadata.setCardinality("1");
+        ArrayOfString keyColumns = new ArrayOfString();
+        columns.forEach(k -> {
+            if(k.select.isSelected())
+                keyColumns.getString().add(k.getName()) ;
+        });
+
+        levelMetadata.setColumnNames(keyColumns);
+        metadata.getLevelMetadata().add(levelMetadata);
+        hierarchyMetadata.setChildren(metadata);
+        getCurrentHierarchyMap().put(currentNode,hierarchyMetadata);
+        boolean result = dataSourceManagement.createHierarchy(birstProperties.getLoginToken(),birstProperties.getCurrentSpace().getId(),currentNode,hierarchyMetadata);
+        DialogHelper.showResultDialog("Create Hierarchy " + currentNode, result);
+    }
 
     private void refreshLevelTableView(TreeItem treeItem){
         if(currentHierarchyMap == null)
@@ -272,20 +297,6 @@ public class HierarchiesTab {
         }
     }
 
-
-
-    public class LevelColumn{
-        public Checkbox select = new Checkbox();
-        private String name;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
 
 
 }

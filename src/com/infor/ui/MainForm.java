@@ -1,30 +1,27 @@
 package com.infor.ui;
 
-import com.birst.StagingTableSubClass;
 import com.birst.UserSpace;
-import com.infor.admin.BirstDataLoadManager;
 import com.infor.admin.DataSourceManagement;
 import com.infor.admin.ExportManager;
 import com.infor.admin.SpaceManagement;
 import com.infor.model.webservice.BirstProperties;
-import com.infor.model.webservice.SourceEntry;
-import com.infor.model.webservice.UserSpaceConverter;
+import com.infor.model.ui.UserSpaceConverter;
 import com.infor.util.DataSourceContainer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.util.Callback;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class MainForm {
@@ -40,6 +37,10 @@ public class MainForm {
 
     private ObservableList<UserSpace> options;
     @FXML
+    private MenuBar menuBar;
+    @FXML
+    private MenuItem newSourceWizardMenu;
+    @FXML
     private ComboBox<UserSpace> comboBox;
     @FXML
     private Button downloadBtn;
@@ -49,6 +50,9 @@ public class MainForm {
     private Tab hierarchiesTab;
     @FXML
     private Tab dataSourceTab;
+    @FXML
+    private Tab reportTab;
+
 
     private void loadManageSourceTab(){
         FXMLLoader loader = new FXMLLoader();
@@ -84,6 +88,35 @@ public class MainForm {
         }
     }
 
+    private void loadReportTab(){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(LoginForm.class.getResource("ReportTab.fxml"));
+        try {
+            SplitPane sp = (SplitPane) loader.load();
+            reportTab.setContent(sp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadNewSourceWizard(){
+        FXMLLoader loader = new FXMLLoader();
+       // loader.setLocation(LoginForm.class.getResource("SelectSourceWizard.fxml"));
+        loader.setLocation(LoginForm.class.getResource("SourceDetailWizard.fxml"));
+        try {
+            AnchorPane sp = (AnchorPane) loader.load();
+            Scene scene = new Scene(sp);
+            Stage secondStage = new Stage();
+            secondStage.setTitle("New Source Wizard");
+            Image image = new Image(LoginForm.class.getResourceAsStream("/resources/images/Icon.png"));
+            secondStage.getIcons().add(image);
+            secondStage.setScene(scene);
+            secondStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void initialize(){
         birstProperties = BirstProperties.getInstance();
@@ -112,6 +145,10 @@ public class MainForm {
         loadManageSourceTab();
         loadHierarchiesTab();
         loadDataSourceTab();
+        loadReportTab();
+
+        //munu event
+        newSourceWizardMenu.setOnAction( event -> loadNewSourceWizard());
     }
 
     @FXML
@@ -121,7 +158,6 @@ public class MainForm {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Download succeed!");
         Optional<ButtonType> result = alert.showAndWait();
-
     }
 
 }

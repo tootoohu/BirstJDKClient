@@ -25,8 +25,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import org.apache.log4j.Logger;
 public class ManageSourceTab implements XmlInterface {
+    private static final Logger logger = Logger.getLogger(ManageSourceTab.class);
     @FXML
     private TableColumn nameColumn;
     @FXML
@@ -51,12 +52,15 @@ public class ManageSourceTab implements XmlInterface {
     private TableColumn unknownValueColumn;
     @FXML
     private TableColumn enableSecFilterColumn;
+    @FXML
+    private Label sourceLabel;
+    @FXML
+    private Button uploadButton;
 
     private DataSourceContainer dataSourceContainer;
 
     private BirstProperties birstProperties = BirstProperties.getInstance();
 
-    private static final Logger logger = Logger.getLogger(MainForm.class);
     private DataSourceManagement dataSourceManagement =  new DataSourceManagement();
     private String currentNode;
     private TreeItem rootTreeItem = new TreeItem<>("All");
@@ -74,7 +78,7 @@ public class ManageSourceTab implements XmlInterface {
     }
 
     private void loadTableView(){
-
+        logger.info("loadTableview");
         ObservableList<TableColumn<SourceColumnSubClass, ?>> list = sourceColumnTableView.getColumns();
         for(TableColumn col : list){
             col.setCellValueFactory(new PropertyValueFactory<>(col.getText()));
@@ -128,7 +132,12 @@ public class ManageSourceTab implements XmlInterface {
 
 
     private void loadTree(TreeItem treeItem, Map<String, StagingTableSubClass> map){
+        logger.info("loadTree");
         sourceTreeview.setRoot(treeItem);
+        if(treeItem.getChildren() != null && treeItem.getChildren().size() >0){
+            treeItem.getChildren().remove(0, treeItem.getChildren().size());
+        }
+
         treeItem.setExpanded(true);
 
         loadTreeItems(treeItem,map);
@@ -139,7 +148,7 @@ public class ManageSourceTab implements XmlInterface {
         addMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("add item");
+                logger.info("Add New Item");
                 TreeItem item = new TreeItem("New Item");
                 treeItem.getChildren().add(item);
             }
@@ -151,12 +160,12 @@ public class ManageSourceTab implements XmlInterface {
             public void handle(ActionEvent event) {
                 TreeItem c = (TreeItem)sourceTreeview.getSelectionModel().getSelectedItem();
                 boolean remove = c.getParent().getChildren().remove(c);
-                System.out.println("Remove");
+                logger.info("Remove " + c.getValue());
 
             }
         });
 
-        MenuItem updateMenu = new MenuItem("Update");
+        MenuItem updateMenu = new MenuItem("Upload");
         updateMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -174,9 +183,18 @@ public class ManageSourceTab implements XmlInterface {
 
                 }
                 sts.setColumns(asc);
+                logger.info("setSourceDetails to " + birstProperties.getCurrentSpace().getId());
                 dataSourceManagement.setSourceDetails(birstProperties.getLoginToken(),birstProperties.getCurrentSpace().getId(),
                         sts);
 
+            }
+        });
+
+        MenuItem importMenu = new MenuItem("Import");
+        importMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                loadFromFileByCurrentSpace();
             }
         });
 
@@ -184,25 +202,21 @@ public class ManageSourceTab implements XmlInterface {
         loadMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                loadFromFileByCurrentSpace();
+                synchronizeFromCurrentSpace();
             }
         });
 
-        MenuItem syncMenu = new MenuItem("Synchronize");
-        syncMenu.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-
-            }
-        });
-
-        contextMenu.getItems().addAll(addMenu, deleteMenu, loadMenu, updateMenu);
+      //  contextMenu.getItems().addAll(addMenu, deleteMenu, loadMenu, updateMenu, syncMenu);
+        contextMenu.getItems().addAll( deleteMenu, importMenu, loadMenu);
         sourceTreeview.setContextMenu(contextMenu);
 
         sourceTreeview.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             TreeItem item = (TreeItem) newValue;
-             refreshTableData(map,item, sourceColumnTableView);
+            refreshTableData(map,item, sourceColumnTableView);
+            if(!item.getValue().equals("All")){
+                sourceLabel.setText((String)item.getValue());
+            }
+
             //   refreshScript(treeItem,container.getBirstXmlSourceMap(),input, script);
         });
 
@@ -218,6 +232,7 @@ public class ManageSourceTab implements XmlInterface {
     }
 
     private void loadFromFileByCurrentSpace(){
+        logger.info("load Tree item From File By Current Space");
         String path = "src/resources/" + birstProperties.getCurrentSpace().getName() + "/";
         File f = new File(path);
         if(!f.exists())
@@ -226,8 +241,8 @@ public class ManageSourceTab implements XmlInterface {
             rootTreeItem.getChildren().remove(0,rootTreeItem.getChildren().size());
         }
 
-        DataSourceContainer container = BirstDataLoadManager.loadFromFile(path);
-        Map sourceMap = container.getBirstXmlSourceMap();
+        dataSourceContainer = BirstDataLoadManager.loadFromFile(path);
+        Map sourceMap = dataSourceContainer.getBirstXmlSourceMap();
         loadTree(rootTreeItem,sourceMap);
 
     }
@@ -245,14 +260,18 @@ public class ManageSourceTab implements XmlInterface {
         for(StagingTableSubClass sts: stagingTableSubClasses){
             stringStagingTableSubClassMap.put(sts.getName(),sts);
         }
-
+        this.dataSourceContainer.setBirstXmlSourceMap(stringStagingTableSubClassMap);
         loadTree(rootTreeItem,stringStagingTableSubClassMap);
+        DialogHelper.showResultDialog("Synchronize from " + birstProperties.getCurrentSpace().getName(), true);
     }
 
     private  void refreshTableData( Map<String, StagingTableSubClass> subClassMap,TreeItem treeItem,
                                     TableView<SourceColumnSubClass> table){
-        if(subClassMap == null || table == null)
+        if(subClassMap == null || table == null) {
             return;
+
+        }
+        logger.info("refresh Table Data");
         if(treeItem.getValue() instanceof String){
             String se = (String) treeItem.getValue();
             currentNode = se;
@@ -274,5 +293,32 @@ public class ManageSourceTab implements XmlInterface {
         }
     }
 
+    @FXML
+    private void onUploadButtonAction(){
+
+        StagingTableSubClass sts = dataSourceContainer.getBirstXmlSourceMap().get(currentNode);
+        if(sts == null){
+            return;
+        }
+        ObservableList<SourceColumnSubClass> list = sourceColumnTableView.getItems();
+        ArrayOfSourceColumnSubClass asc = null;
+        if(list != null && list.size() >0){
+            asc = new ArrayOfSourceColumnSubClass();
+            for(SourceColumnSubClass s: list) {
+                logger.info("Unknown Value ->");
+                if(s.getUnknownValue() == null || s.getUnknownValue().equals("")){
+                    s.setUnknownValue("Unknown Value");
+                }
+                asc.getSourceColumnSubClass().add(s);
+            }
+
+        }
+
+        sts.setColumns(asc);
+        logger.info("setSourceDetails to " + birstProperties.getCurrentSpace().getId());
+        dataSourceManagement.setSourceDetails(birstProperties.getLoginToken(),birstProperties.getCurrentSpace().getId(),
+                sts);
+        DialogHelper.showResultDialog("Upload for " + sts.getName(), true);
+    }
 
 }

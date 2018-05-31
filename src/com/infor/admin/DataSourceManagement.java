@@ -129,7 +129,10 @@ public class DataSourceManagement extends AbstractManagement{
     public void setSourceDetails(String token, String spaceId,  StagingTableSubClass stagingTableSubClass){
         if(token == null || spaceId == null || stagingTableSubClass == null )
             return;
-
+        if(stagingTableSubClass.isDisabled()){
+            stagingTableSubClass.setDisabled(false);
+        }
+        stagingTableSubClass.setScript(null);
         GregorianCalendar gc = new GregorianCalendar();
         try {
             stagingTableSubClass.setLastModifiedDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(gc));
@@ -145,9 +148,9 @@ public class DataSourceManagement extends AbstractManagement{
         getClient().updateHierarchy(token,spaceId,sourceEntry.getName(), hierarchyMetadata);
     }
 
-    public void updateHierarchy(String token, String spaceId, String name, HierarchyMetadata hierarchyMetadata){
+    public boolean updateHierarchy(String token, String spaceId, String name, HierarchyMetadata hierarchyMetadata){
 
-        getClient().updateHierarchy(token,spaceId,name, hierarchyMetadata);
+        return getClient().updateHierarchy(token,spaceId,name, hierarchyMetadata);
     }
 
     public List<CustomSubjectArea> getODBCTableResult(String token, String spaceId){
@@ -169,6 +172,13 @@ public class DataSourceManagement extends AbstractManagement{
             return;
         HierarchyMetadata hierarchyMetadata = getHierarchyMetadata(sourceEntry,columns);
         getClient().createHierarchy(token,spaceId,hierarchyMetadata);
+
+    }
+    public boolean createHierarchy(String token, String spaceId,String name, HierarchyMetadata hierarchyMetadata ){
+        if(token == null || spaceId == null || name == null || hierarchyMetadata == null)
+            return false;
+
+        return getClient().createHierarchy(token,spaceId,hierarchyMetadata);
 
     }
 
